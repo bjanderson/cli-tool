@@ -1,0 +1,26 @@
+{
+  "name": "test-cli",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "author": "Lernato, LLC",
+  "license": "MIT",
+  "bin": {
+    "hello": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/index.js",
+    "lint": "tslint --project \".\""
+  },
+  "devDependencies": {
+    "@lernato/common": "4.0.0",
+    "@types/command-line-args": "5.0.0",
+    "@types/command-line-usage": "5.0.1",
+    "@types/node": "12.12.8",
+    "command-line-args": "5.1.1",
+    "command-line-usage": "6.1.0",
+    "tslint": "5.20.1",
+    "typescript": "3.7.2"
+  }
+}
