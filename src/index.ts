@@ -2,30 +2,28 @@
 
 import commandLineArgs, {
   CommandLineOptions,
-  OptionDefinition,
   ParseOptions,
 } from 'command-line-args';
-import commandLineUsage from 'command-line-usage';
+import commandLineUsage, { OptionDefinition } from 'command-line-usage';
+import { createModelConfig, readFile } from './utils';
 
-interface IMyOptionDefinition extends OptionDefinition {
-  description?: string;
-}
-
-const optionDefinitions: IMyOptionDefinition[] = [
+const optionDefinitions: OptionDefinition[] = [
   {
     alias: 'h',
     description: 'Show this help information',
     name: 'help',
     type: Boolean,
+    typeLabel: 'boolean',
   },
   {
-    alias: 'm',
+    alias: 'c',
     description:
       'Create a model with tests using the given list of kabob-cased folder names',
     lazyMultiple: true,
     multiple: true,
-    name: 'create-model',
+    name: 'create',
     type: String,
+    typeLabel: 'string[]',
   },
 ];
 
@@ -40,13 +38,13 @@ const options: CommandLineOptions = commandLineArgs(
   parseOptions,
 );
 
-console.log('options :', options);
+// console.log('options :', options);
 
-if (options.help) {
+if (Object.keys(options).length === 0 || options.help) {
   showUsage();
 } else {
   if (shouldCreateModel(options)) {
-    createModels(options.createModel);
+    createModels(options.create);
   }
 }
 
@@ -68,9 +66,14 @@ function showUsage(): void {
 }
 
 function shouldCreateModel(input: CommandLineOptions): boolean {
-  return input.createModel && input.createModel.length > 0;
+  return input.create && input.create.length > 0;
 }
 
 function createModels(modelNames: string[]): void {
-  console.log('createModels modelNames :', modelNames);
+  console.log('create modelNames :', modelNames);
+  for (const name of modelNames) {
+    const config = createModelConfig(name);
+    readFile(config.modelsIndexFile);
+    // createDirectoryIfNotExists(config.folder);
+  }
 }
