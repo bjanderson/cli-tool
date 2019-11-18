@@ -1,16 +1,48 @@
 #!/usr/bin/env node
 
 import { IModelConfig } from './model-config.interface';
-import { readFile, writeFile } from './utils';
+import {
+  createDirectory,
+  createDirectoryIfNotExists,
+  pathExists,
+  readFile,
+  writeFile,
+} from './utils';
 
-export function createModel(config: IModelConfig): void {
+export function createNewModel(config: IModelConfig): void {
+  createDirectoryIfNotExists(config.folder);
+  createModelsIndexIfNotExists(config);
+  if (config.fileExt === 'js') {
+    createJSModel(config);
+  } else {
+    createTSModel(config);
+  }
+  createModelSpec(config);
+  createModelIndex(config);
+  updateModelsIndex(config);
+}
+
+export function createJSModel(config: IModelConfig): void {
+  const text = `import { getObject, getString } from '@lernato/common';
+
+export class ${config.pascal} {
+  constructor(o) {
+    const obj = getObject(o);
+    this.value = getString(obj.value);
+  }
+}
+`;
+  writeFile(config.file, text);
+}
+
+export function createTSModel(config: IModelConfig): void {
   const text = `import { getObject, getString } from '@lernato/common';
 
 export class ${config.pascal} {
   public value: string;
 
   constructor(o?: Partial<${config.pascal}>) {
-    const obj = getObject(o);
+    const obj: Partial<${config.pascal}> = getObject(o);
     this.value = getString(obj.value);
   }
 }
@@ -20,7 +52,7 @@ export class ${config.pascal} {
 
 export function createModelSpec(config: IModelConfig): void {
   const text = `import { DEFAULT_STRING } from '@lernato/common';
-import { ${config.pascal} } from './${config.kabob}.model
+import { ${config.pascal} } from './${config.kabob}.model';
 
 describe('${config.pascal}', () => {
   describe('constructor defaults', () => {
@@ -75,4 +107,12 @@ export function updateModelsIndex(config: IModelConfig): void {
   }
   const text = parts.join('\n');
   writeFile(config.modelsIndexFile, text);
+}
+
+function createModelsIndexIfNotExists(config: IModelConfig): void {
+  if (!pathExists(config.modelsIndexFile)) {
+    const text = '';
+    createDirectory(config.modelsFolder);
+    writeFile(config.modelsIndexFile, text);
+  }
 }

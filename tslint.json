@@ -1,10 +1,44 @@
 {
-  "defaultSeverity": "error",
-  "extends": ["tslint:recommended"],
-  "jsRules": {},
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-airbnb",
+    "tslint-config-prettier",
+    "tslint-plugin-prettier"
+  ],
+  "rulesDirectory": [],
   "rules": {
-    "no-console": false,
-    "quotemark": [true, "single"]
-  },
-  "rulesDirectory": []
+    "prettier": true,
+    "array-type": false,
+    "arrow-parens": true,
+    "deprecation": {
+      "severity": "warning"
+    },
+    "interface-name": true,
+    "max-classes-per-file": [true, 1, "exclude-class-expressions"],
+    "member-access": true,
+    "member-ordering": [
+      true,
+      {
+        "order": ["static-field", "instance-field", "static-method", "instance-method"]
+      }
+    ],
+    "no-consecutive-blank-lines": true,
+    "no-console": [true, "debug", "info", "time", "timeEnd", "trace"],
+    "no-empty": false,
+    "no-inferrable-types": [true, "ignore-params"],
+    "no-non-null-assertion": true,
+    "no-redundant-jsdoc": true,
+    "no-switch-case-fall-through": true,
+    "no-var-requires": false,
+    "object-literal-key-quotes": [true, "as-needed"],
+    "object-literal-sort-keys": false,
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "case-insensitive",
+        "named-imports-order": "case-insensitive"
+      }
+    ],
+    "no-require-imports": true
+  }
 }

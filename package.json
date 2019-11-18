@@ -1,10 +1,11 @@
 {
   "name": "@lernato/model-generator",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "A command line program for generating JavaScript model boilerplate",
   "author": "Lernato, LLC",
   "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "model": "./dist/index.js"
   },
@@ -18,7 +19,6 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "npm run build && node dist/index.js",
     "lint": "tslint --project \".\"",
     "watch": "npm-watch"
   },
@@ -32,7 +32,17 @@
     "command-line-usage": "6.1.0",
     "fs-extra": "8.1.0",
     "npm-watch": "0.6.0",
+    "prettier": "1.18.2",
     "tslint": "5.20.1",
+    "tslint-config-airbnb": "5.11.2",
+    "tslint-config-prettier": "1.18.0",
+    "tslint-plugin-prettier": "2.0.1",
     "typescript": "3.7.2"
-  }
+  },
+  "files": [
+    "dist/",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ]
 }
