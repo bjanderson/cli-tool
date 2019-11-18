@@ -10,6 +10,4 @@ export interface IModelConfig {
   pascal: string;
   spec: string;
   index: string;
-  exportText: string;
-  modelsExportText: string;
 }
