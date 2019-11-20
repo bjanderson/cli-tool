@@ -10,6 +10,6 @@ const modelGenerator = new ModelGenerator(utilsService);
 
 if (Object.keys(commandLineOptions).length === 0 || commandLineOptions.help) {
   console.log(usageInstructions);
-} else {
+} else if (commandLineOptions.create && commandLineOptions.create.length > 0) {
   modelGenerator.createModels(commandLineOptions);
 }

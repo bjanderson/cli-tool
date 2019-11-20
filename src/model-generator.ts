@@ -9,9 +9,6 @@ export class ModelGenerator {
   constructor(private utils: UtilsService) {}
 
   public createModels(cliOptions: CommandLineOptions): void {
-    if (this.shouldCreateModels(cliOptions)) {
-      this.createModels(cliOptions);
-    }
     const modelNames = cliOptions.create;
     const fileExt = cliOptions.vanillaJavascript ? 'js' : 'ts';
     for (const name of modelNames) {
@@ -20,10 +17,6 @@ export class ModelGenerator {
     }
 
     console.log('\nModels generated successfully.\n');
-  }
-
-  public shouldCreateModels(commandLineOptions: CommandLineOptions): boolean {
-    return commandLineOptions.create && commandLineOptions.create.length > 0;
   }
 
   public createModelConfig(name: string, fileExt: string): IModelConfig {
@@ -134,26 +127,25 @@ describe('${config.pascal}', () => {
     });
   });
 });
-
-  `;
+`;
     this.utils.writeFile(config.spec, text);
   }
 
   public createModelIndex(config: IModelConfig): void {
     const text = `export * from './${config.kabob}.model';
-  `;
+`;
     this.utils.writeFile(config.index, text);
   }
 
   public updateModelsIndex(config: IModelConfig): void {
-    const indexContents = this.utils.readFile(config.modelsIndexFile);
+    const indexContents = this.utils.readFile(config.modelsIndexFile).trim();
     const parts = indexContents.split('\n');
     const modelsExportText = `export * from './${config.kabob}';`;
     if (!parts.includes(modelsExportText)) {
       parts.push(modelsExportText);
-      parts.sort((a: string, b: string) => a.localeCompare(b));
     }
-    const text = parts.join('\n');
+    parts.sort((a: string, b: string) => a.localeCompare(b));
+    const text = `${parts.join('\n')}\n`;
     this.utils.writeFile(config.modelsIndexFile, text);
   }
 

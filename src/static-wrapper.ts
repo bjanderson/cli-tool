@@ -9,6 +9,7 @@ import { resolve } from 'path';
 export interface IStaticWrapper {
   existsSync: typeof existsSync;
   mkdirpSync: typeof mkdirpSync;
+  process: typeof process;
   readFileSync: typeof readFileSync;
   resolve: typeof resolve;
   writeFileSync: typeof writeFileSync;
@@ -17,6 +18,7 @@ export interface IStaticWrapper {
 export const staticWrapper: IStaticWrapper = {
   existsSync,
   mkdirpSync,
+  process,
   readFileSync,
   resolve,
   writeFileSync,
