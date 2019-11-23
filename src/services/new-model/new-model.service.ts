@@ -1,34 +1,54 @@
-#!/usr/bin/env node
-
 import { camelFromKabobOrPascal, lowerize, pascalFromKabobOrCamel } from '@lernato/common';
-import { CommandLineOptions } from 'command-line-args';
-import { IModelConfig } from './model-config.interface';
-import { UtilsService } from './utils.service';
+import { IModelConfig } from '../../interfaces';
+import { UtilsService } from '../utils';
 
-export class ModelGenerator {
-  constructor(private utils: UtilsService) {}
+const defaultModelsFolder = 'src/models';
 
-  public createModels(cliOptions: CommandLineOptions): void {
-    const modelNames = cliOptions.create;
-    const fileExt = cliOptions.vanillaJavascript ? 'js' : 'ts';
-    for (const name of modelNames) {
-      const config = this.createModelConfig(name, fileExt);
-      this.createNewModel(config);
+export class NewModelService {
+  constructor(private utilsService: UtilsService) {}
+
+  createModel(args: string[]) {
+    const modelName = this.getModelName(args);
+    if (!modelName) {
+      console.error('Invalid model name');
+      process.exit(2);
     }
-
-    console.log('\nModels generated successfully.\n');
+    const fileExt = this.getFileExt(args);
+    const modelsFolder = this.getModelsFolder(args);
+    const modelConfig = this.createModelConfig(modelName, fileExt, modelsFolder);
+    this.createNewModel(modelConfig);
   }
 
-  public createModelConfig(name: string, fileExt: string): IModelConfig {
+  getFileExt(args: string[]): string {
+    const i = args.findIndex((arg) => arg === '-j' || arg === '--vanillajs');
+    return i < 0 ? 'ts' : 'js';
+  }
+
+  getModelsFolder(args: string[]): string {
+    const i = args.findIndex((arg) => arg === '-f' || arg === '--models-folder');
+    return i < 0 ? defaultModelsFolder : args[i + 1];
+  }
+
+  getModelName(args: string[]): string {
+    const argArray = args.slice();
+    let i = argArray.findIndex((arg) => arg.startsWith('-') || arg.startsWith('--'));
+    while (i > -1) {
+      argArray.splice(i, 2);
+      i = argArray.findIndex((arg) => arg.startsWith('-') || arg.startsWith('--'));
+    }
+    return argArray[0];
+  }
+
+  createModelConfig(name: string, fileExt: string, modelsLocation: string): IModelConfig {
     const camel = camelFromKabobOrPascal(name);
     const kabob = lowerize(name);
     const pascal = pascalFromKabobOrCamel(name);
-    const modelsFolder = this.utils.resolve(['models']);
-    const modelsIndexFile = this.utils.resolve([modelsFolder, `index.${fileExt}`]);
-    const folder = this.utils.resolve([modelsFolder, kabob]);
-    const file = this.utils.resolve([folder, `${kabob}.model.${fileExt}`]);
-    const spec = this.utils.resolve([folder, `${kabob}.model.spec.${fileExt}`]);
-    const index = this.utils.resolve([folder, `index.${fileExt}`]);
+    const modelsFolder = this.utilsService.resolve(modelsLocation.split('/'));
+    const modelsIndexFile = this.utilsService.resolve([modelsFolder, `index.${fileExt}`]);
+    const folder = this.utilsService.resolve([modelsFolder, kabob]);
+    const file = this.utilsService.resolve([folder, `${kabob}.model.${fileExt}`]);
+    const spec = this.utilsService.resolve([folder, `${kabob}.model.spec.${fileExt}`]);
+    const index = this.utilsService.resolve([folder, `index.${fileExt}`]);
 
     const config: IModelConfig = {
       camel,
@@ -49,8 +69,8 @@ export class ModelGenerator {
     return config;
   }
 
-  public createNewModel(config: IModelConfig): void {
-    this.utils.createDirectoryIfNotExists(config.folder);
+  createNewModel(config: IModelConfig): void {
+    this.utilsService.createDirectoryIfNotExists(config.folder);
     this.createModelsIndexIfNotExists(config);
     if (config.fileExt === 'js') {
       this.createJSModel(config);
@@ -62,7 +82,7 @@ export class ModelGenerator {
     this.updateModelsIndex(config);
   }
 
-  public createJSModel(config: IModelConfig): void {
+  createJSModel(config: IModelConfig): void {
     const text = `import { getObject, getString } from '@lernato/common';
 
 export class ${config.pascal} {
@@ -72,14 +92,14 @@ export class ${config.pascal} {
   }
 }
 `;
-    this.utils.writeFile(config.file, text);
+    this.utilsService.writeFile(config.file, text);
   }
 
-  public createTSModel(config: IModelConfig): void {
+  createTSModel(config: IModelConfig): void {
     const text = `import { getObject, getString } from '@lernato/common';
 
 export class ${config.pascal} {
-  public value: string;
+  value: string;
 
   constructor(o?: Partial<${config.pascal}>) {
     const obj: Partial<${config.pascal}> = getObject(o);
@@ -87,10 +107,10 @@ export class ${config.pascal} {
   }
 }
 `;
-    this.utils.writeFile(config.file, text);
+    this.utilsService.writeFile(config.file, text);
   }
 
-  public createModelSpec(config: IModelConfig): void {
+  createModelSpec(config: IModelConfig): void {
     const text = `import { DEFAULT_STRING } from '@lernato/common';
 import { ${config.pascal} } from './${config.kabob}.model';
 
@@ -128,17 +148,17 @@ describe('${config.pascal}', () => {
   });
 });
 `;
-    this.utils.writeFile(config.spec, text);
+    this.utilsService.writeFile(config.spec, text);
   }
 
-  public createModelIndex(config: IModelConfig): void {
+  createModelIndex(config: IModelConfig): void {
     const text = `export * from './${config.kabob}.model';
 `;
-    this.utils.writeFile(config.index, text);
+    this.utilsService.writeFile(config.index, text);
   }
 
-  public updateModelsIndex(config: IModelConfig): void {
-    const indexContents = this.utils.readFile(config.modelsIndexFile).trim();
+  updateModelsIndex(config: IModelConfig): void {
+    const indexContents = this.utilsService.readFile(config.modelsIndexFile).trim();
     const parts = indexContents.split('\n');
     const modelsExportText = `export * from './${config.kabob}';`;
     if (!parts.includes(modelsExportText)) {
@@ -146,14 +166,14 @@ describe('${config.pascal}', () => {
     }
     parts.sort((a: string, b: string) => a.localeCompare(b));
     const text = `${parts.join('\n')}\n`;
-    this.utils.writeFile(config.modelsIndexFile, text);
+    this.utilsService.writeFile(config.modelsIndexFile, text);
   }
 
-  public createModelsIndexIfNotExists(config: IModelConfig): void {
-    if (!this.utils.pathExists(config.modelsIndexFile)) {
+  createModelsIndexIfNotExists(config: IModelConfig): void {
+    if (!this.utilsService.pathExists(config.modelsIndexFile)) {
       const text = '';
-      this.utils.createDirectory(config.modelsFolder);
-      this.utils.writeFile(config.modelsIndexFile, text);
+      this.utilsService.createDirectory(config.modelsFolder);
+      this.utilsService.writeFile(config.modelsIndexFile, text);
     }
   }
 }

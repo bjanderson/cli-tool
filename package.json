@@ -1,5 +1,5 @@
 {
-  "name": "@lernato/model-generator",
+  "name": "@lernato/cli",
   "version": "0.0.1",
   "description": "A command line program for generating JavaScript model boilerplate",
   "author": "Lernato, LLC",
@@ -7,7 +7,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "model": "./dist/index.js"
+    "lernato-cli": "./dist/index.js"
   },
   "watch": {
     "build": {
@@ -25,14 +25,10 @@
     "test:cov": "jest --coverage"
   },
   "devDependencies": {
-    "@lernato/common": "4.1.0",
-    "@types/command-line-args": "5.0.0",
-    "@types/command-line-usage": "5.0.1",
+    "@lernato/common": "4.1.1",
     "@types/fs-extra": "8.0.1",
     "@types/jest": "24.0.23",
     "@types/node": "12.12.8",
-    "command-line-args": "5.1.1",
-    "command-line-usage": "6.1.0",
     "fs-extra": "8.1.0",
     "jest": "24.9.0",
     "npm-watch": "0.6.0",

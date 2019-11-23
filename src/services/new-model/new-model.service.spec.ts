@@ -1,6 +1,6 @@
-import { ModelGenerator } from './model-generator';
+import { NewModelService } from './new-model.service';
 
-const utils: any = {
+const utilsService: any = {
   createDirectory: () => undefined,
   createDirectoryIfNotExists: () => undefined,
   pathExists: () => false,
@@ -12,46 +12,11 @@ const utils: any = {
 let generator: any;
 let consoleLogSpy: any;
 function init() {
-  generator = new ModelGenerator(utils);
+  generator = new NewModelService(utilsService);
   consoleLogSpy = spyOn(console, 'log').and.returnValue(null);
 }
 
-describe('ModelGenerator()', () => {
-  const testConfig = { name: 'test-model' };
-
-  describe('createModels()', () => {
-    beforeEach(() => {
-      init();
-      generator.createModelConfig = () => testConfig;
-      generator.createNewModel = () => undefined;
-    });
-
-    it('is a function', () => {
-      expect(typeof generator.createModels).toEqual('function');
-    });
-
-    it('calls createModelConfig() with the model name and ts file extension', () => {
-      const spy = spyOn(generator, 'createModelConfig').and.callThrough();
-      const cliOptions = { create: ['test-model'], vanillaJavascript: false };
-      generator.createModels(cliOptions);
-      expect(spy).toHaveBeenCalledWith('test-model', 'ts');
-    });
-
-    it('calls createModelConfig() with the model name and js file extension', () => {
-      const spy = spyOn(generator, 'createModelConfig').and.callThrough();
-      const cliOptions = { create: ['test-model'], vanillaJavascript: true };
-      generator.createModels(cliOptions);
-      expect(spy).toHaveBeenCalledWith('test-model', 'js');
-    });
-
-    it('calls createNewModel()', () => {
-      const spy = spyOn(generator, 'createNewModel').and.callThrough();
-      const cliOptions = { create: ['test-model'], vanillaJavascript: true };
-      generator.createModels(cliOptions);
-      expect(spy).toHaveBeenCalledWith(testConfig);
-    });
-  });
-
+describe('NewModelService()', () => {
   describe('createModelConfig()', () => {
     beforeEach(() => {
       init();
@@ -64,36 +29,36 @@ describe('ModelGenerator()', () => {
     it('creates the model config for ts file', () => {
       const expected = {
         camel: 'testModel',
-        file: 'models/test-model/test-model.model.ts',
+        file: 'src/models/test-model/test-model.model.ts',
         fileExt: 'ts',
-        folder: 'models/test-model',
-        index: 'models/test-model/index.ts',
+        folder: 'src/models/test-model',
+        index: 'src/models/test-model/index.ts',
         kabob: 'test-model',
-        modelsFolder: 'models',
-        modelsIndexFile: 'models/index.ts',
+        modelsFolder: 'src/models',
+        modelsIndexFile: 'src/models/index.ts',
         name: 'test-model',
         pascal: 'TestModel',
-        spec: 'models/test-model/test-model.model.spec.ts',
+        spec: 'src/models/test-model/test-model.model.spec.ts',
       };
-      const result = generator.createModelConfig('test-model', 'ts');
+      const result = generator.createModelConfig('test-model', 'ts', 'src/models');
       expect(result).toEqual(expected);
     });
 
     it('creates the model config for js file', () => {
       const expected = {
         camel: 'testModel',
-        file: 'models/test-model/test-model.model.js',
+        file: 'src/models/test-model/test-model.model.js',
         fileExt: 'js',
-        folder: 'models/test-model',
-        index: 'models/test-model/index.js',
+        folder: 'src/models/test-model',
+        index: 'src/models/test-model/index.js',
         kabob: 'test-model',
-        modelsFolder: 'models',
-        modelsIndexFile: 'models/index.js',
+        modelsFolder: 'src/models',
+        modelsIndexFile: 'src/models/index.js',
         name: 'test-model',
         pascal: 'TestModel',
-        spec: 'models/test-model/test-model.model.spec.js',
+        spec: 'src/models/test-model/test-model.model.spec.js',
       };
-      const result = generator.createModelConfig('test-model', 'js');
+      const result = generator.createModelConfig('test-model', 'js', 'src/models');
       expect(result).toEqual(expected);
     });
   });
@@ -113,8 +78,8 @@ describe('ModelGenerator()', () => {
       expect(typeof generator.createNewModel).toEqual('function');
     });
 
-    it('calls utils.createDirectoryIfNotExists()', () => {
-      const spy = spyOn(generator.utils, 'createDirectoryIfNotExists').and.callThrough();
+    it('calls utilsService.createDirectoryIfNotExists()', () => {
+      const spy = spyOn(generator.utilsService, 'createDirectoryIfNotExists').and.callThrough();
       const config = {
         folder: 'test-model',
         fileExt: 'ts',
@@ -193,8 +158,8 @@ describe('ModelGenerator()', () => {
       expect(typeof generator.createJSModel).toEqual('function');
     });
 
-    it('calls utils.writeFile()', () => {
-      const spy = spyOn(generator.utils, 'writeFile').and.callThrough();
+    it('calls utilsService.writeFile()', () => {
+      const spy = spyOn(generator.utilsService, 'writeFile').and.callThrough();
       const config = {
         file: 'models/test-model/test-model.model.ts',
         pascal: 'TestModel',
@@ -222,8 +187,8 @@ export class TestModel {
       expect(typeof generator.createTSModel).toEqual('function');
     });
 
-    it('calls utils.writeFile()', () => {
-      const spy = spyOn(generator.utils, 'writeFile').and.callThrough();
+    it('calls utilsService.writeFile()', () => {
+      const spy = spyOn(generator.utilsService, 'writeFile').and.callThrough();
       const config = {
         file: 'models/test-model/test-model.model.ts',
         pascal: 'TestModel',
@@ -231,7 +196,7 @@ export class TestModel {
       const expectedText = `import { getObject, getString } from '@lernato/common';
 
 export class TestModel {
-  public value: string;
+  value: string;
 
   constructor(o?: Partial<TestModel>) {
     const obj: Partial<TestModel> = getObject(o);
@@ -253,8 +218,8 @@ export class TestModel {
       expect(typeof generator.createModelSpec).toEqual('function');
     });
 
-    it('calls utils.writeFile()', () => {
-      const spy = spyOn(generator.utils, 'writeFile').and.callThrough();
+    it('calls utilsService.writeFile()', () => {
+      const spy = spyOn(generator.utilsService, 'writeFile').and.callThrough();
       const config = {
         kabob: 'test-model',
         pascal: 'TestModel',
@@ -311,8 +276,8 @@ describe('TestModel', () => {
       expect(typeof generator.createModelIndex).toEqual('function');
     });
 
-    it('calls utils.writeFile()', () => {
-      const spy = spyOn(generator.utils, 'writeFile').and.callThrough();
+    it('calls utilsService.writeFile()', () => {
+      const spy = spyOn(generator.utilsService, 'writeFile').and.callThrough();
       const config = {
         index: 'models/test-model/index.ts',
         kabob: 'test-model',
@@ -333,12 +298,12 @@ describe('TestModel', () => {
       expect(typeof generator.updateModelsIndex).toEqual('function');
     });
 
-    it('calls utils.writeFile() with the model export added', () => {
-      const spy = spyOn(generator.utils, 'writeFile').and.callThrough();
+    it('calls utilsService.writeFile() with the model export added', () => {
+      const spy = spyOn(generator.utilsService, 'writeFile').and.callThrough();
       const fileText = `export * from './a-model';
 export * from './z-model';
 `;
-      generator.utils.readFile = () => fileText;
+      generator.utilsService.readFile = () => fileText;
       const config = {
         modelsIndexFile: 'models/index.ts',
         kabob: 'test-model',
@@ -352,12 +317,12 @@ export * from './z-model';
     });
 
     it('does not add the export if it already exists', () => {
-      const spy = spyOn(generator.utils, 'writeFile').and.callThrough();
+      const spy = spyOn(generator.utilsService, 'writeFile').and.callThrough();
       const fileText = `export * from './test-model';
 export * from './a-model';
 export * from './z-model';
 `;
-      generator.utils.readFile = () => fileText;
+      generator.utilsService.readFile = () => fileText;
       const config = {
         modelsIndexFile: 'models/index.ts',
         kabob: 'test-model',
@@ -380,8 +345,8 @@ export * from './z-model';
       expect(typeof generator.createModelsIndexIfNotExists).toEqual('function');
     });
 
-    it('calls utils.pathExists()', () => {
-      const spy = spyOn(generator.utils, 'pathExists').and.callThrough();
+    it('calls utilsService.pathExists()', () => {
+      const spy = spyOn(generator.utilsService, 'pathExists').and.callThrough();
       const config = {
         modelsFolder: 'models',
         modelsIndexFile: 'models/index.ts',
@@ -390,8 +355,8 @@ export * from './z-model';
       expect(spy).toHaveBeenCalledWith(config.modelsIndexFile);
     });
 
-    it('calls utils.createDirectory()', () => {
-      const spy = spyOn(generator.utils, 'createDirectory').and.callThrough();
+    it('calls utilsService.createDirectory()', () => {
+      const spy = spyOn(generator.utilsService, 'createDirectory').and.callThrough();
       const config = {
         modelsFolder: 'models',
         modelsIndexFile: 'models/index.ts',
@@ -400,8 +365,8 @@ export * from './z-model';
       expect(spy).toHaveBeenCalledWith(config.modelsFolder);
     });
 
-    it('calls utils.writeFile()', () => {
-      const spy = spyOn(generator.utils, 'writeFile').and.callThrough();
+    it('calls utilsService.writeFile()', () => {
+      const spy = spyOn(generator.utilsService, 'writeFile').and.callThrough();
       const config = {
         modelsFolder: 'models',
         modelsIndexFile: 'models/index.ts',

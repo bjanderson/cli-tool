@@ -1,15 +1,25 @@
 #!/usr/bin/env node
 
-import { commandLineOptions, usageInstructions } from './command-line-option-definitions';
-import { ModelGenerator } from './model-generator';
-import { staticWrapper } from './static-wrapper';
-import { UtilsService } from './utils.service';
+import { App } from './app';
+import {
+  InitJestService,
+  InitPrettierService,
+  InitTypeScriptService,
+  NewModelService,
+  UtilsService,
+} from './services';
+import { staticFunctionWrapper } from './static-function-wrapper';
 
-const utilsService = new UtilsService(staticWrapper);
-const modelGenerator = new ModelGenerator(utilsService);
+const utilsServiceInstance = new UtilsService(staticFunctionWrapper);
+const initJestServiceInstance = new InitJestService(utilsServiceInstance);
+const initPrettierServiceInstance = new InitPrettierService(utilsServiceInstance);
+const initTypeScriptServiceInstance = new InitTypeScriptService(utilsServiceInstance);
+const newModelServiceInstance = new NewModelService(utilsServiceInstance);
 
-if (Object.keys(commandLineOptions).length === 0 || commandLineOptions.help) {
-  console.log(usageInstructions);
-} else if (commandLineOptions.create && commandLineOptions.create.length > 0) {
-  modelGenerator.createModels(commandLineOptions);
-}
+const app = new App(
+  initJestServiceInstance,
+  initPrettierServiceInstance,
+  initTypeScriptServiceInstance,
+  newModelServiceInstance
+);
+app.run();

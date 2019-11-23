@@ -1,6 +1,6 @@
 import { UtilsService } from './utils.service';
 
-const staticWrapper: any = {
+const staticFunctionWrapper: any = {
   existsSync: () => undefined,
   mkdirpSync: () => undefined,
   process: { exit: () => undefined },
@@ -12,7 +12,7 @@ const staticWrapper: any = {
 let service: any;
 let consoleErrorSpy: any;
 function init() {
-  service = new UtilsService(staticWrapper);
+  service = new UtilsService(staticFunctionWrapper);
   consoleErrorSpy = spyOn(console, 'error').and.returnValue(null);
 }
 
@@ -26,15 +26,15 @@ describe('UtilsService()', () => {
       expect(typeof service.createDirectory).toEqual('function');
     });
 
-    it('calls staticWrapper.mkdirpSync()', () => {
-      const spy = spyOn(service.staticWrapper, 'mkdirpSync').and.callThrough();
+    it('calls staticFunctionWrapper.mkdirpSync()', () => {
+      const spy = spyOn(service.staticFunctionWrapper, 'mkdirpSync').and.callThrough();
       const path = 'test/path';
       service.createDirectory(path);
       expect(spy).toHaveBeenCalled();
     });
 
     it('calls console.error when mkdirpSync throws an error', () => {
-      service.staticWrapper.mkdirpSync = () => {
+      service.staticFunctionWrapper.mkdirpSync = () => {
         throw Error('test mkdirpSync error');
       };
       const path = 'test/path';
@@ -42,11 +42,11 @@ describe('UtilsService()', () => {
       expect(consoleErrorSpy).toHaveBeenCalledTimes(2);
     });
 
-    it('calls staticWrapper.process.exit when mkdirpSync throws an error', () => {
-      service.staticWrapper.mkdirpSync = () => {
+    it('calls staticFunctionWrapper.process.exit when mkdirpSync throws an error', () => {
+      service.staticFunctionWrapper.mkdirpSync = () => {
         throw Error('test mkdirpSync error');
       };
-      const spy = spyOn(service.staticWrapper.process, 'exit').and.callThrough();
+      const spy = spyOn(service.staticFunctionWrapper.process, 'exit').and.callThrough();
       const path = 'test/path';
       service.createDirectory(path);
       expect(spy).toHaveBeenCalledWith(1);
@@ -78,9 +78,9 @@ describe('UtilsService()', () => {
       expect(consoleErrorSpy).toHaveBeenCalled();
     });
 
-    it('calls staticWrapper.process.exit when pathExists', () => {
+    it('calls staticFunctionWrapper.process.exit when pathExists', () => {
       service.pathExists = () => true;
-      const spy = spyOn(service.staticWrapper.process, 'exit').and.callThrough();
+      const spy = spyOn(service.staticFunctionWrapper.process, 'exit').and.callThrough();
       const path = 'test/path';
       service.createDirectoryIfNotExists(path);
       expect(spy).toHaveBeenCalledWith(1);
@@ -96,8 +96,8 @@ describe('UtilsService()', () => {
       expect(typeof service.pathExists).toEqual('function');
     });
 
-    it('calls staticWrapper.existsSync', () => {
-      const spy = spyOn(service.staticWrapper, 'existsSync').and.callThrough();
+    it('calls staticFunctionWrapper.existsSync', () => {
+      const spy = spyOn(service.staticFunctionWrapper, 'existsSync').and.callThrough();
       const path = 'test/path';
       service.pathExists(path);
       expect(spy).toHaveBeenCalled();
@@ -113,8 +113,8 @@ describe('UtilsService()', () => {
       expect(typeof service.readFile).toEqual('function');
     });
 
-    it('calls staticWrapper.readFileSync()', () => {
-      const spy = spyOn(service.staticWrapper, 'readFileSync').and.callThrough();
+    it('calls staticFunctionWrapper.readFileSync()', () => {
+      const spy = spyOn(service.staticFunctionWrapper, 'readFileSync').and.callThrough();
       const fileName = 'test.file';
       service.readFile(fileName);
       expect(spy).toHaveBeenCalledWith(fileName, { encoding: 'utf-8' });
@@ -136,8 +136,8 @@ describe('UtilsService()', () => {
       expect(typeof service.resolve).toEqual('function');
     });
 
-    it('calls staticWrapper.resolve', () => {
-      const spy = spyOn(service.staticWrapper, 'resolve').and.callThrough();
+    it('calls staticFunctionWrapper.resolve', () => {
+      const spy = spyOn(service.staticFunctionWrapper, 'resolve').and.callThrough();
       const pathSegments = ['test', 'path'];
       service.resolve(pathSegments);
       expect(spy).toHaveBeenCalledWith(...pathSegments);
@@ -153,8 +153,8 @@ describe('UtilsService()', () => {
       expect(typeof service.writeFile).toEqual('function');
     });
 
-    it('calls staticWrapper.writeFileSync()', () => {
-      const spy = spyOn(service.staticWrapper, 'writeFileSync').and.callThrough();
+    it('calls staticFunctionWrapper.writeFileSync()', () => {
+      const spy = spyOn(service.staticFunctionWrapper, 'writeFileSync').and.callThrough();
       const file = 'test.file';
       const text = 'test text';
       service.writeFile(file, text);
@@ -162,7 +162,7 @@ describe('UtilsService()', () => {
     });
 
     it('calls console.error when writeFileSync throws an error', () => {
-      service.staticWrapper.writeFileSync = () => {
+      service.staticFunctionWrapper.writeFileSync = () => {
         throw Error('test writeFileSync error');
       };
       const file = 'test.file';
@@ -171,11 +171,11 @@ describe('UtilsService()', () => {
       expect(consoleErrorSpy).toHaveBeenCalledTimes(2);
     });
 
-    it('calls staticWrapper.process.exit when writeFileSync throws an error', () => {
-      service.staticWrapper.writeFileSync = () => {
+    it('calls staticFunctionWrapper.process.exit when writeFileSync throws an error', () => {
+      service.staticFunctionWrapper.writeFileSync = () => {
         throw Error('test writeFileSync error');
       };
-      const spy = spyOn(service.staticWrapper.process, 'exit').and.callThrough();
+      const spy = spyOn(service.staticFunctionWrapper.process, 'exit').and.callThrough();
       const file = 'test.file';
       const text = 'test text';
       service.writeFile(file, text);

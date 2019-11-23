@@ -2,11 +2,11 @@ import { existsSync, mkdirpSync, readFileSync, writeFileSync } from 'fs-extra';
 import { resolve } from 'path';
 
 /**
- * Encapsulate all of our un-mockable file system functions here
+ * Encapsulate all of our un-mockable file system functions here,
  * so we can dependency inject them wherever we need them.
  */
 
-export interface IStaticWrapper {
+export interface IStaticFunctionWrapper {
   existsSync: typeof existsSync;
   mkdirpSync: typeof mkdirpSync;
   process: typeof process;
@@ -15,7 +15,7 @@ export interface IStaticWrapper {
   writeFileSync: typeof writeFileSync;
 }
 
-export const staticWrapper: IStaticWrapper = {
+export const staticFunctionWrapper: IStaticFunctionWrapper = {
   existsSync,
   mkdirpSync,
   process,

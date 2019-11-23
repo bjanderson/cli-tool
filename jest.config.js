@@ -9,5 +9,11 @@ module.exports = {
 
   testEnvironment: 'node',
 
-  testPathIgnorePatterns: ['<rootDir>/coverage/', '<rootDir>/dist/', '<rootDir>/node_modules/'],
+  testPathIgnorePatterns: [
+    '<rootDir>/coverage/',
+    '<rootDir>/design/',
+    '<rootDir>/dist/',
+    '<rootDir>/docs/',
+    '<rootDir>/node_modules/',
+  ],
 };
