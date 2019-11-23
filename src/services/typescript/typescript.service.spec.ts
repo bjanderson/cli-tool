@@ -1,4 +1,6 @@
-import { InitPrettierService } from './init-prettier.service';
+import { TypeScriptService } from './typescript.service';
+
+const npmService: any = {};
 
 const utilsService: any = {
   createDirectory: () => undefined,
@@ -11,10 +13,10 @@ const utilsService: any = {
 
 let service: any;
 function init() {
-  service = new InitPrettierService(utilsService);
+  service = new TypeScriptService(npmService, utilsService);
 }
 
-describe('InitPrettierService()', () => {
+describe('TypeScriptService()', () => {
   describe('constructor()', () => {
     beforeEach(() => {
       init();

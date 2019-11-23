@@ -1,4 +1,4 @@
-import { InitTypeScriptService } from './init-typescript.service';
+import { NpmService } from './npm.service';
 
 const utilsService: any = {
   createDirectory: () => undefined,
@@ -11,10 +11,10 @@ const utilsService: any = {
 
 let service: any;
 function init() {
-  service = new InitTypeScriptService(utilsService);
+  service = new NpmService(utilsService);
 }
 
-describe('InitTypeScriptService()', () => {
+describe('NpmService()', () => {
   describe('constructor()', () => {
     beforeEach(() => {
       init();

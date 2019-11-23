@@ -1,3 +1,4 @@
+import { execSync } from 'child_process';
 import { existsSync, mkdirpSync, readFileSync, writeFileSync } from 'fs-extra';
 import { resolve } from 'path';
 
@@ -7,6 +8,7 @@ import { resolve } from 'path';
  */
 
 export interface IStaticFunctionWrapper {
+  execSync: typeof execSync;
   existsSync: typeof existsSync;
   mkdirpSync: typeof mkdirpSync;
   process: typeof process;
@@ -16,6 +18,7 @@ export interface IStaticFunctionWrapper {
 }
 
 export const staticFunctionWrapper: IStaticFunctionWrapper = {
+  execSync,
   existsSync,
   mkdirpSync,
   process,

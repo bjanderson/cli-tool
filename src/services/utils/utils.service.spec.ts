@@ -1,6 +1,7 @@
 import { UtilsService } from './utils.service';
 
 const staticFunctionWrapper: any = {
+  execSync: () => undefined,
   existsSync: () => undefined,
   mkdirpSync: () => undefined,
   process: { exit: () => undefined },

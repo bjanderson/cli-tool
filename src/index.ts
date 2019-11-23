@@ -2,24 +2,33 @@
 
 import { App } from './app';
 import {
-  InitJestService,
-  InitPrettierService,
-  InitTypeScriptService,
+  CLIService,
+  JestService,
   NewModelService,
+  NpmService,
+  PrettierService,
+  TypeScriptService,
   UtilsService,
 } from './services';
 import { staticFunctionWrapper } from './static-function-wrapper';
 
 const utilsServiceInstance = new UtilsService(staticFunctionWrapper);
-const initJestServiceInstance = new InitJestService(utilsServiceInstance);
-const initPrettierServiceInstance = new InitPrettierService(utilsServiceInstance);
-const initTypeScriptServiceInstance = new InitTypeScriptService(utilsServiceInstance);
+const npmServiceInstance = new NpmService(utilsServiceInstance);
 const newModelServiceInstance = new NewModelService(utilsServiceInstance);
 
-const app = new App(
-  initJestServiceInstance,
-  initPrettierServiceInstance,
-  initTypeScriptServiceInstance,
-  newModelServiceInstance
+const typeScriptServiceInstance = new TypeScriptService(npmServiceInstance, utilsServiceInstance);
+
+const jestServiceInstance = new JestService(npmServiceInstance, typeScriptServiceInstance);
+const prettierServiceInstance = new PrettierService(npmServiceInstance, typeScriptServiceInstance);
+
+const cliServiceInstance = new CLIService(
+  jestServiceInstance,
+  prettierServiceInstance,
+  typeScriptServiceInstance,
+  newModelServiceInstance,
+  utilsServiceInstance
 );
-app.run();
+
+const args = process.argv.slice(2).map((arg) => arg.toLocaleLowerCase());
+const app = new App(cliServiceInstance);
+app.run(args);
