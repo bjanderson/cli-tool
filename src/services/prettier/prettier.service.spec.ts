@@ -4,9 +4,18 @@ const npmService: any = {};
 
 const typeScriptService: any = {};
 
+const utilsService: any = {
+  createDirectory: () => undefined,
+  createDirectoryIfNotExists: () => undefined,
+  pathExists: () => false,
+  readFile: () => undefined,
+  resolve: (pathSegments: string[]) => pathSegments.join('/'),
+  writeFile: () => undefined,
+};
+
 let service: any;
 function init() {
-  service = new PrettierService(npmService, typeScriptService);
+  service = new PrettierService(npmService, typeScriptService, utilsService);
 }
 
 describe('PrettierService()', () => {

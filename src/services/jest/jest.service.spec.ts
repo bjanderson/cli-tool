@@ -4,9 +4,18 @@ const npmService: any = {};
 
 const typeScriptService: any = {};
 
+const utilsService: any = {
+  createDirectory: () => undefined,
+  createDirectoryIfNotExists: () => undefined,
+  pathExists: () => false,
+  readFile: () => undefined,
+  resolve: (pathSegments: string[]) => pathSegments.join('/'),
+  writeFile: () => undefined,
+};
+
 let service: any;
 function init() {
-  service = new JestService(npmService, typeScriptService);
+  service = new JestService(npmService, typeScriptService, utilsService);
 }
 
 describe('JestService()', () => {

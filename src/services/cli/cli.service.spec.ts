@@ -12,7 +12,7 @@ const typeScriptService: any = {
   init: () => undefined,
 };
 
-const newModelService: any = {
+const modelService: any = {
   createModel: () => undefined,
 };
 
@@ -26,7 +26,7 @@ function init() {
     jestService,
     prettierService,
     typeScriptService,
-    newModelService,
+    modelService,
     utilsService
   );
 }
@@ -42,13 +42,13 @@ describe('CLIService()', () => {
     });
   });
 
-  describe('init()', () => {
+  describe('run()', () => {
     beforeEach(() => {
       init();
     });
 
     it('is a function', () => {
-      expect(typeof service.init).toEqual('function');
+      expect(typeof service.run).toEqual('function');
     });
   });
 });

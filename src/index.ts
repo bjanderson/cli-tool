@@ -4,7 +4,7 @@ import { App } from './app';
 import {
   CLIService,
   JestService,
-  NewModelService,
+  ModelService,
   NpmService,
   PrettierService,
   TypeScriptService,
@@ -14,18 +14,26 @@ import { staticFunctionWrapper } from './static-function-wrapper';
 
 const utilsServiceInstance = new UtilsService(staticFunctionWrapper);
 const npmServiceInstance = new NpmService(utilsServiceInstance);
-const newModelServiceInstance = new NewModelService(utilsServiceInstance);
+const modelServiceInstance = new ModelService(utilsServiceInstance);
 
 const typeScriptServiceInstance = new TypeScriptService(npmServiceInstance, utilsServiceInstance);
 
-const jestServiceInstance = new JestService(npmServiceInstance, typeScriptServiceInstance);
-const prettierServiceInstance = new PrettierService(npmServiceInstance, typeScriptServiceInstance);
+const jestServiceInstance = new JestService(
+  npmServiceInstance,
+  typeScriptServiceInstance,
+  utilsServiceInstance
+);
+const prettierServiceInstance = new PrettierService(
+  npmServiceInstance,
+  typeScriptServiceInstance,
+  utilsServiceInstance
+);
 
 const cliServiceInstance = new CLIService(
   jestServiceInstance,
   prettierServiceInstance,
   typeScriptServiceInstance,
-  newModelServiceInstance,
+  modelServiceInstance,
   utilsServiceInstance
 );
 

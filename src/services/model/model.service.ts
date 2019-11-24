@@ -1,10 +1,10 @@
 import { camelFromKabobOrPascal, lowerize, pascalFromKabobOrCamel } from '@lernato/common';
-import { IModelConfig } from '../../interfaces';
+import { ModelConfig } from '../../models';
 import { UtilsService } from '../utils';
 
 const defaultModelsFolder = 'src/models';
 
-export class NewModelService {
+export class ModelService {
   constructor(private utilsService: UtilsService) {}
 
   createModel(args: string[]) {
@@ -39,7 +39,7 @@ export class NewModelService {
     return argArray[0];
   }
 
-  createModelConfig(name: string, fileExt: string, modelsLocation: string): IModelConfig {
+  createModelConfig(name: string, fileExt: string, modelsLocation: string): ModelConfig {
     const camel = camelFromKabobOrPascal(name);
     const kabob = lowerize(name);
     const pascal = pascalFromKabobOrCamel(name);
@@ -50,7 +50,7 @@ export class NewModelService {
     const spec = this.utilsService.resolve([folder, `${kabob}.model.spec.${fileExt}`]);
     const index = this.utilsService.resolve([folder, `index.${fileExt}`]);
 
-    const config: IModelConfig = {
+    const config = new ModelConfig({
       camel,
       file,
       fileExt,
@@ -62,14 +62,14 @@ export class NewModelService {
       name,
       pascal,
       spec,
-    };
+    });
 
     console.log('\nconfig :', config, '\n');
 
     return config;
   }
 
-  createNewModel(config: IModelConfig): void {
+  createNewModel(config: ModelConfig): void {
     this.utilsService.createDirectoryIfNotExists(config.folder);
     this.createModelsIndexIfNotExists(config);
     if (config.fileExt === 'js') {
@@ -82,7 +82,7 @@ export class NewModelService {
     this.updateModelsIndex(config);
   }
 
-  createJSModel(config: IModelConfig): void {
+  createJSModel(config: ModelConfig): void {
     const text = `import { getObject, getString } from '@lernato/common';
 
 export class ${config.pascal} {
@@ -95,7 +95,7 @@ export class ${config.pascal} {
     this.utilsService.writeFile(config.file, text);
   }
 
-  createTSModel(config: IModelConfig): void {
+  createTSModel(config: ModelConfig): void {
     const text = `import { getObject, getString } from '@lernato/common';
 
 export class ${config.pascal} {
@@ -110,7 +110,7 @@ export class ${config.pascal} {
     this.utilsService.writeFile(config.file, text);
   }
 
-  createModelSpec(config: IModelConfig): void {
+  createModelSpec(config: ModelConfig): void {
     const text = `import { DEFAULT_STRING } from '@lernato/common';
 import { ${config.pascal} } from './${config.kabob}.model';
 
@@ -151,13 +151,13 @@ describe('${config.pascal}', () => {
     this.utilsService.writeFile(config.spec, text);
   }
 
-  createModelIndex(config: IModelConfig): void {
+  createModelIndex(config: ModelConfig): void {
     const text = `export * from './${config.kabob}.model';
 `;
     this.utilsService.writeFile(config.index, text);
   }
 
-  updateModelsIndex(config: IModelConfig): void {
+  updateModelsIndex(config: ModelConfig): void {
     const indexContents = this.utilsService.readFile(config.modelsIndexFile).trim();
     const parts = indexContents.split('\n');
     const modelsExportText = `export * from './${config.kabob}';`;
@@ -165,11 +165,11 @@ describe('${config.pascal}', () => {
       parts.push(modelsExportText);
     }
     parts.sort((a: string, b: string) => a.localeCompare(b));
-    const text = `${parts.join('\n')}\n`;
+    const text = `${parts.join('\n').trim()}\n`;
     this.utilsService.writeFile(config.modelsIndexFile, text);
   }
 
-  createModelsIndexIfNotExists(config: IModelConfig): void {
+  createModelsIndexIfNotExists(config: ModelConfig): void {
     if (!this.utilsService.pathExists(config.modelsIndexFile)) {
       const text = '';
       this.utilsService.createDirectory(config.modelsFolder);

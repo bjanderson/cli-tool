@@ -1,5 +1,5 @@
 import { JestService } from '../jest';
-import { NewModelService } from '../new-model';
+import { ModelService } from '../model';
 import { PrettierService } from '../prettier';
 import { TypeScriptService } from '../typescript';
 import { UtilsService } from '../utils';
@@ -9,7 +9,7 @@ export class CLIService {
     private jestService: JestService,
     private prettierService: PrettierService,
     private typeScriptService: TypeScriptService,
-    private newModelService: NewModelService,
+    private modelService: ModelService,
     private utilsService: UtilsService
   ) {}
 
@@ -38,7 +38,7 @@ export class CLIService {
     const subCommand = args.shift();
     switch (subCommand) {
       case 'model':
-        this.newModelService.createModel(args);
+        this.modelService.createModel(args);
         break;
       default:
         this.showUsage();
@@ -87,7 +87,7 @@ new \tCreate new things
 
 Example:
 
-  lernato-cli new model my-model -f path/to/my-models-folder -l js
+  lernato-cli new model my-model -f path/to/my-models-folder -j
 
 -----------------------------
 

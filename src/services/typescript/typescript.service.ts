@@ -38,70 +38,62 @@ export class TypeScriptService {
   }
 
   createTSConfig(): void {
-    const text = `
-{
-  "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "lib": ["esnext"],
-    "declaration": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
-    "types": ["node"],
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
-  }
-}
-`;
-    this.utilsService.writeFile(this.tsConfigJsonFile, text);
+    const tsConfig = {
+      compilerOptions: {
+        target: 'es5',
+        module: 'commonjs',
+        lib: ['esnext'],
+        declaration: true,
+        outDir: './dist',
+        rootDir: './src',
+        types: ['node'],
+        esModuleInterop: true,
+        forceConsistentCasingInFileNames: true,
+      },
+    };
+    this.writeTSConfigJson(tsConfig);
   }
 
   createTSLintJson(): void {
-    const text = `
-{
-  "extends": [
-    "tslint:recommended",
-    "tslint-config-airbnb"
-  ],
-  "rulesDirectory": [],
-  "rules": {
-    "array-type": false,
-    "arrow-parens": true,
-    "deprecation": {
-      "severity": "warning"
-    },
-    "interface-name": true,
-    "max-classes-per-file": [true, 1, "exclude-class-expressions"],
-    "member-access": false,
-    "member-ordering": [
-      true,
-      {
-        "order": ["static-field", "instance-field", "static-method", "instance-method"]
-      }
-    ],
-    "no-consecutive-blank-lines": true,
-    "no-console": [true, "debug", "info", "time", "timeEnd", "trace"],
-    "no-empty": false,
-    "no-inferrable-types": [true, "ignore-params"],
-    "no-non-null-assertion": true,
-    "no-redundant-jsdoc": true,
-    "no-switch-case-fall-through": true,
-    "no-var-requires": false,
-    "object-literal-key-quotes": [true, "as-needed"],
-    "object-literal-sort-keys": false,
-    "ordered-imports": [
-      true,
-      {
-        "import-sources-order": "case-insensitive",
-        "named-imports-order": "case-insensitive"
-      }
-    ],
-    "no-require-imports": true
-  }
-}
-`;
-    this.utilsService.writeFile(this.tsLintJsonFile, text);
+    const tslint = {
+      extends: ['tslint:recommended', 'tslint-config-airbnb'],
+      rulesDirectory: [],
+      rules: {
+        'array-type': false,
+        'arrow-parens': true,
+        deprecation: {
+          severity: 'warning',
+        },
+        'interface-name': true,
+        'max-classes-per-file': [true, 1, 'exclude-class-expressions'],
+        'member-access': false,
+        'member-ordering': [
+          true,
+          {
+            order: ['static-field', 'instance-field', 'static-method', 'instance-method'],
+          },
+        ],
+        'no-consecutive-blank-lines': true,
+        'no-console': [true, 'debug', 'info', 'time', 'timeEnd', 'trace'],
+        'no-empty': false,
+        'no-inferrable-types': [true, 'ignore-params'],
+        'no-non-null-assertion': true,
+        'no-redundant-jsdoc': true,
+        'no-switch-case-fall-through': true,
+        'no-var-requires': false,
+        'object-literal-key-quotes': [true, 'as-needed'],
+        'object-literal-sort-keys': false,
+        'ordered-imports': [
+          true,
+          {
+            'import-sources-order': 'case-insensitive',
+            'named-imports-order': 'case-insensitive',
+          },
+        ],
+        'no-require-imports': true,
+      },
+    };
+    this.writeTSLintJson(tslint);
   }
 
   getTSConfigJson(): any {

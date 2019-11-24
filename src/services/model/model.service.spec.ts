@@ -1,4 +1,4 @@
-import { NewModelService } from './new-model.service';
+import { ModelService } from './model.service';
 
 const utilsService: any = {
   createDirectory: () => undefined,
@@ -12,11 +12,11 @@ const utilsService: any = {
 let generator: any;
 let consoleLogSpy: any;
 function init() {
-  generator = new NewModelService(utilsService);
+  generator = new ModelService(utilsService);
   consoleLogSpy = spyOn(console, 'log').and.returnValue(null);
 }
 
-describe('NewModelService()', () => {
+describe('ModelService()', () => {
   describe('createModelConfig()', () => {
     beforeEach(() => {
       init();

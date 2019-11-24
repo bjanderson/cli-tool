@@ -25,13 +25,13 @@ describe('NpmService()', () => {
     });
   });
 
-  describe('init()', () => {
+  describe('installPackages()', () => {
     beforeEach(() => {
       init();
     });
 
     it('is a function', () => {
-      expect(typeof service.init).toEqual('function');
+      expect(typeof service.installPackages).toEqual('function');
     });
   });
 });
