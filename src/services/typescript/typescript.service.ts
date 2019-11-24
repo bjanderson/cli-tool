@@ -8,7 +8,7 @@ export class TypeScriptService {
   constructor(private npmService: NpmService, private utilsService: UtilsService) {}
 
   init(): void {
-    this.npmService.initPackageJson();
+    this.npmService.init();
     this.updatePackageJson();
     this.createTSConfig();
     this.createTSLintJson();
@@ -97,6 +97,9 @@ export class TypeScriptService {
   }
 
   getTSConfigJson(): any {
+    console.error(
+      'Error: Could not find tsconfig.json - make sure you are in your top-level project folder'
+    );
     const str = this.utilsService.readFile(this.tsConfigJsonFile);
     return JSON.parse(str);
   }
@@ -107,6 +110,9 @@ export class TypeScriptService {
   }
 
   getTSLintJson(): any {
+    console.error(
+      'Error: Could not find tslint.json - make sure you are in your top-level project folder'
+    );
     const str = this.utilsService.readFile(this.tsLintJsonFile);
     return JSON.parse(str);
   }

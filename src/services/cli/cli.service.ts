@@ -1,15 +1,17 @@
 import { JestService } from '../jest';
 import { ModelService } from '../model';
 import { PrettierService } from '../prettier';
+import { ServiceService } from '../service';
 import { TypeScriptService } from '../typescript';
 import { UtilsService } from '../utils';
 
 export class CLIService {
   constructor(
     private jestService: JestService,
-    private prettierService: PrettierService,
-    private typeScriptService: TypeScriptService,
     private modelService: ModelService,
+    private prettierService: PrettierService,
+    private serviceService: ServiceService,
+    private typeScriptService: TypeScriptService,
     private utilsService: UtilsService
   ) {}
 
@@ -30,7 +32,7 @@ export class CLIService {
         break;
       default:
         this.showUsage();
-        this.utilsService.exit(2);
+        this.utilsService.exit(1);
     }
   }
 
@@ -40,9 +42,12 @@ export class CLIService {
       case 'model':
         this.modelService.createModel(args);
         break;
+      case 'service':
+        this.serviceService.createService(args);
+        break;
       default:
         this.showUsage();
-        this.utilsService.exit(2);
+        this.utilsService.exit(1);
     }
   }
 
@@ -60,7 +65,7 @@ export class CLIService {
         break;
       default:
         this.showUsage();
-        this.utilsService.exit(2);
+        this.utilsService.exit(1);
     }
   }
 
@@ -81,22 +86,27 @@ Commands:
 new \tCreate new things
 
   model <model-name> \tCreate a new model
-
     -f, --models-folder <folder/path> \tthe high-level folder that all models are stored in (default: src/models)
-    -j, --vanillajs \t\t\tcreate files as js instead of ts
+    -j, --vanillajs \t\t\tcreate files as vanilla JavaScript instead of TypeScript
+
+  service <service-name> \tCreate a new service
+    -f, --services-folder <folder/path> \tthe high-level folder that all services are stored in (default: src/services)
+    -j, --vanillajs \t\t\t\tcreate files as vanilla JavaScript instead of TypeScript
 
 Example:
 
   lernato-cli new model my-model -f path/to/my-models-folder -j
+  lernato-cli new service my-service -f path/to/my-services-folder -j
 
 -----------------------------
 
 init \tInitialize things in your project
 
   typescript \tInitialize typesript and tslint
-  jest \t\tInitialize jest for unit testing
-  prettier \tInitialize prettier for code formatting
 
+  jest \t\tInitialize jest for unit testing
+
+  prettier \tInitialize prettier for code formatting
 
 Example:
 

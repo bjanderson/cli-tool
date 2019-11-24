@@ -7,6 +7,15 @@ export class NpmService {
 
   constructor(private utilsService: UtilsService) {}
 
+  init(): void {
+    if (!this.hasPackageJson()) {
+      this.utilsService.execute('npm init -y');
+      this.initGitIgnore();
+      this.initEditorConfig();
+      this.cleanPackageJson();
+    }
+  }
+
   installPackages(packages: string[]): void {
     const command = `npm i -D --ignore-scripts ${packages.join(' ')}`;
     this.utilsService.execute(command);
@@ -22,15 +31,6 @@ export class NpmService {
 
   hasEditorConfig(): boolean {
     return this.utilsService.pathExists(this.editorconfigFile);
-  }
-
-  initPackageJson(): void {
-    if (!this.hasPackageJson()) {
-      this.utilsService.execute('npm init -y');
-      this.initGitIgnore();
-      this.initEditorConfig();
-      this.cleanPackageJson();
-    }
   }
 
   initGitIgnore(): void {
@@ -71,6 +71,12 @@ max_line_length = null
   }
 
   getPackageJson(): any {
+    if (!this.utilsService.pathExists(this.packageJsonFile)) {
+      console.error(
+        'Error: Could not find package.json - make sure you are in your top-level project folder'
+      );
+      this.utilsService.exit(1);
+    }
     const str = this.utilsService.readFile(this.packageJsonFile);
     const json = JSON.parse(str);
     return json;

@@ -2,16 +2,14 @@ import { camelFromKabobOrPascal, lowerize, pascalFromKabobOrCamel } from '@lerna
 import { ModelConfig } from '../../models';
 import { UtilsService } from '../utils';
 
-const defaultModelsFolder = 'src/models';
-
 export class ModelService {
   constructor(private utilsService: UtilsService) {}
 
   createModel(args: string[]) {
-    const modelName = this.getModelName(args);
-    if (!modelName) {
+    const modelName = args.shift();
+    if (modelName.startsWith('-')) {
       console.error('Invalid model name');
-      process.exit(2);
+      process.exit(1);
     }
     const fileExt = this.getFileExt(args);
     const modelsFolder = this.getModelsFolder(args);
@@ -26,17 +24,7 @@ export class ModelService {
 
   getModelsFolder(args: string[]): string {
     const i = args.findIndex((arg) => arg === '-f' || arg === '--models-folder');
-    return i < 0 ? defaultModelsFolder : args[i + 1];
-  }
-
-  getModelName(args: string[]): string {
-    const argArray = args.slice();
-    let i = argArray.findIndex((arg) => arg.startsWith('-') || arg.startsWith('--'));
-    while (i > -1) {
-      argArray.splice(i, 2);
-      i = argArray.findIndex((arg) => arg.startsWith('-') || arg.startsWith('--'));
-    }
-    return argArray[0];
+    return i < 0 ? ModelConfig.defaultModelsFolder : args[i + 1];
   }
 
   createModelConfig(name: string, fileExt: string, modelsLocation: string): ModelConfig {
