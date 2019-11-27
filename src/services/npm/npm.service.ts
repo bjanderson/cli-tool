@@ -7,7 +7,7 @@ export class NpmService {
 
   constructor(private utilsService: UtilsService) {}
 
-  init(): void {
+  init(args: string[]): void {
     if (!this.hasPackageJson()) {
       this.utilsService.execute('npm init -y');
       this.initGitIgnore();

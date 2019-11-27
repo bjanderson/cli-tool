@@ -1,3 +1,4 @@
+import { FileExtension } from '../../enums/file-extensions';
 import { ServiceService } from './service.service';
 
 const utilsService: any = {
@@ -30,7 +31,7 @@ describe('ServiceService()', () => {
       const expected = {
         camel: 'testService',
         file: 'src/services/test-service/test-service.service.ts',
-        fileExt: 'ts',
+        fileExt: FileExtension.TS,
         folder: 'src/services/test-service',
         index: 'src/services/test-service/index.ts',
         kabob: 'test-service',
@@ -48,7 +49,7 @@ describe('ServiceService()', () => {
       const expected = {
         camel: 'testService',
         file: 'src/services/test-service/test-service.service.js',
-        fileExt: 'js',
+        fileExt: FileExtension.JS,
         folder: 'src/services/test-service',
         index: 'src/services/test-service/index.js',
         kabob: 'test-service',
@@ -69,7 +70,8 @@ describe('ServiceService()', () => {
       generator.createServicesIndexIfNotExists = () => undefined;
       generator.createJSService = () => undefined;
       generator.createTSService = () => undefined;
-      generator.createServiceSpec = () => undefined;
+      generator.createJSServiceSpec = () => undefined;
+      generator.createTSServiceSpec = () => undefined;
       generator.createServiceIndex = () => undefined;
       generator.updateServicesIndex = () => undefined;
     });
@@ -82,7 +84,7 @@ describe('ServiceService()', () => {
       const spy = spyOn(generator.utilsService, 'createDirectoryIfNotExists').and.callThrough();
       const config = {
         folder: 'test-service',
-        fileExt: 'ts',
+        fileExt: FileExtension.TS,
       };
       generator.createNewService(config);
       expect(spy).toHaveBeenCalledWith(config.folder);
@@ -92,7 +94,7 @@ describe('ServiceService()', () => {
       const spy = spyOn(generator, 'createServicesIndexIfNotExists').and.callThrough();
       const config = {
         folder: 'test-service',
-        fileExt: 'ts',
+        fileExt: FileExtension.TS,
       };
       generator.createNewService(config);
       expect(spy).toHaveBeenCalledWith(config);
@@ -102,7 +104,7 @@ describe('ServiceService()', () => {
       const spy = spyOn(generator, 'createJSService').and.callThrough();
       const config = {
         folder: 'test-service',
-        fileExt: 'js',
+        fileExt: FileExtension.JS,
       };
       generator.createNewService(config);
       expect(spy).toHaveBeenCalledWith(config);
@@ -112,17 +114,27 @@ describe('ServiceService()', () => {
       const spy = spyOn(generator, 'createTSService').and.callThrough();
       const config = {
         folder: 'test-service',
-        fileExt: 'ts',
+        fileExt: FileExtension.TS,
       };
       generator.createNewService(config);
       expect(spy).toHaveBeenCalledWith(config);
     });
 
-    it('calls createServiceSpec()', () => {
-      const spy = spyOn(generator, 'createServiceSpec').and.callThrough();
+    it('calls createJSServiceSpec()', () => {
+      const spy = spyOn(generator, 'createJSServiceSpec').and.callThrough();
       const config = {
         folder: 'test-service',
-        fileExt: 'ts',
+        fileExt: FileExtension.JS,
+      };
+      generator.createNewService(config);
+      expect(spy).toHaveBeenCalledWith(config);
+    });
+
+    it('calls createTSServiceSpec()', () => {
+      const spy = spyOn(generator, 'createTSServiceSpec').and.callThrough();
+      const config = {
+        folder: 'test-service',
+        fileExt: FileExtension.TS,
       };
       generator.createNewService(config);
       expect(spy).toHaveBeenCalledWith(config);
@@ -132,7 +144,7 @@ describe('ServiceService()', () => {
       const spy = spyOn(generator, 'createServiceIndex').and.callThrough();
       const config = {
         folder: 'test-service',
-        fileExt: 'ts',
+        fileExt: FileExtension.TS,
       };
       generator.createNewService(config);
       expect(spy).toHaveBeenCalledWith(config);
@@ -142,7 +154,7 @@ describe('ServiceService()', () => {
       const spy = spyOn(generator, 'updateServicesIndex').and.callThrough();
       const config = {
         folder: 'test-service',
-        fileExt: 'ts',
+        fileExt: FileExtension.TS,
       };
       generator.createNewService(config);
       expect(spy).toHaveBeenCalledWith(config);
@@ -164,13 +176,8 @@ describe('ServiceService()', () => {
         file: 'services/test-service/test-service.service.ts',
         pascal: 'TestService',
       };
-      const expectedText = `import { getObject, getString } from '@lernato/common';
-
-export class TestService {
-  constructor(o) {
-    const obj = getObject(o);
-    this.value = getString(obj.value);
-  }
+      const expectedText = `export class TestServiceService {
+  constructor() {}
 }
 `;
       generator.createJSService(config);
@@ -193,15 +200,8 @@ export class TestService {
         file: 'services/test-service/test-service.service.ts',
         pascal: 'TestService',
       };
-      const expectedText = `import { getObject, getString } from '@lernato/common';
-
-export class TestService {
-  value: string;
-
-  constructor(o?: Partial<TestService>) {
-    const obj: Partial<TestService> = getObject(o);
-    this.value = getString(obj.value);
-  }
+      const expectedText = `export class TestServiceService {
+  constructor() {}
 }
 `;
       generator.createTSService(config);
@@ -209,13 +209,13 @@ export class TestService {
     });
   });
 
-  describe('createServiceSpec()', () => {
+  describe('createJSServiceSpec()', () => {
     beforeEach(() => {
       init();
     });
 
     it('is a function', () => {
-      expect(typeof generator.createServiceSpec).toEqual('function');
+      expect(typeof generator.createJSServiceSpec).toEqual('function');
     });
 
     it('calls utilsService.writeFile()', () => {
@@ -225,44 +225,66 @@ export class TestService {
         pascal: 'TestService',
         spec: 'services/test-service/test-service.service.spec.ts',
       };
-      const expectedText = `import { DEFAULT_STRING } from '@lernato/common';
-import { TestService } from './test-service.service';
+      const expectedText = `import { TestServiceService } from './test-service.service';
 
-describe('TestService', () => {
-  describe('constructor defaults', () => {
-    const defaults = {
-      value: DEFAULT_STRING,
-    };
+let service;
+function init() {
+  service = new TestServiceService();
+}
 
-    it('should have the expected fields', () => {
-      expect(Object.keys(defaults)).toEqual(Object.keys(new TestService()));
+describe('TestServiceService', () => {
+  describe('constructor()', () => {
+    beforeEach(() => {
+      init();
     });
 
-    it('should set the default values when given no input object', () => {
-      expect(Object.values(defaults)).toEqual(Object.values(new TestService()));
-    });
-
-    it('should set the default values when given null', () => {
-      expect(Object.values(defaults)).toEqual(Object.values(new TestService(null)));
-    });
-
-    it('should set the default values when given an empty object', () => {
-      expect(Object.values(defaults)).toEqual(Object.values(new TestService({})));
-    });
-  });
-
-  describe('constructor assignments', () => {
-    it('should set all values passed into the constructor', () => {
-      const test = {
-        value: 'test value',
-      };
-
-      expect(Object.values(test)).toEqual(Object.values(new TestService(test)));
+    it('is initializes', () => {
+      expect(service).toBeDefined();
     });
   });
 });
 `;
-      generator.createServiceSpec(config);
+      generator.createJSServiceSpec(config);
+      expect(spy).toHaveBeenCalledWith(config.spec, expectedText);
+    });
+  });
+
+  describe('createTSServiceSpec()', () => {
+    beforeEach(() => {
+      init();
+    });
+
+    it('is a function', () => {
+      expect(typeof generator.createTSServiceSpec).toEqual('function');
+    });
+
+    it('calls utilsService.writeFile()', () => {
+      const spy = spyOn(generator.utilsService, 'writeFile').and.callThrough();
+      const config = {
+        kabob: 'test-service',
+        pascal: 'TestService',
+        spec: 'services/test-service/test-service.service.spec.ts',
+      };
+      const expectedText = `import { TestServiceService } from './test-service.service';
+
+let service: any;
+function init() {
+  service = new TestServiceService();
+}
+
+describe('TestServiceService', () => {
+  describe('constructor()', () => {
+    beforeEach(() => {
+      init();
+    });
+
+    it('is initializes', () => {
+      expect(service).toBeDefined();
+    });
+  });
+});
+`;
+      generator.createTSServiceSpec(config);
       expect(spy).toHaveBeenCalledWith(config.spec, expectedText);
     });
   });

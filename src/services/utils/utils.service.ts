@@ -1,7 +1,13 @@
+import { FileExtension } from '../../enums/file-extensions';
 import { IStaticFunctionWrapper } from '../../static-function-wrapper';
 
 export class UtilsService {
   constructor(private staticFunctionWrapper: IStaticFunctionWrapper) {}
+
+  getFileExtension(args: string[]): FileExtension {
+    const i = args.findIndex((arg) => arg === '-j' || arg === '--vanillajs');
+    return i > -1 ? FileExtension.JS : FileExtension.TS;
+  }
 
   createDirectory(path: string): void {
     try {

@@ -1,3 +1,4 @@
+import { FileExtension } from '../../enums/file-extensions';
 import { NpmService } from '../npm';
 import { TypeScriptService } from '../typescript';
 import { UtilsService } from '../utils';
@@ -11,10 +12,16 @@ export class JestService {
     private utilsService: UtilsService
   ) {}
 
-  init(): void {
+  init(args: string[]): void {
+    const fileExtension = this.utilsService.getFileExtension(args);
+    const isVanillaJs = fileExtension === FileExtension.JS;
     this.updatePackageJson();
-    this.createJestConfig();
-    this.updateTSConfigJson();
+    this.installPackages(isVanillaJs);
+    this.createJestConfig(isVanillaJs, fileExtension);
+    if (!isVanillaJs) {
+      this.updateTSConfigJson();
+    }
+    this.createIndexSpecFile(fileExtension);
   }
 
   updatePackageJson(): void {
@@ -24,20 +31,22 @@ export class JestService {
     json.scripts['test:cov'] = 'jest --coverage';
 
     this.npmService.writePackageJson(json);
-    this.installPackages();
   }
 
-  installPackages(): void {
-    const packages = ['jest', 'ts-jest', '@types/jest'];
+  installPackages(isVanillaJs: boolean): void {
+    let packages = ['jest'];
+    if (!isVanillaJs) {
+      packages = packages.concat(['ts-jest', '@types/jest']);
+    }
     this.npmService.installPackages(packages);
   }
 
-  createJestConfig(): void {
+  createJestConfig(isVanillaJs: boolean, fileExt: FileExtension): void {
     const config = {
-      collectCoverageFrom: ['<rootDir>/src/**/*.ts', '!<rootDir>/src/**/index.ts'],
+      collectCoverageFrom: [`<rootDir>/src/**/*.${fileExt}`, `!<rootDir>/src/**/index.${fileExt}`],
       coverageDirectory: 'coverage',
       coverageReporters: ['lcov', 'text-summary'],
-      preset: 'ts-jest',
+      preset: isVanillaJs ? '' : 'ts-jest',
       testEnvironment: 'node',
       testPathIgnorePatterns: [
         '<rootDir>/coverage/',
@@ -57,7 +66,16 @@ export class JestService {
 
   updateTSConfigJson(): void {
     const tsconfig = this.typeScriptService.getTSConfigJson();
-    tsconfig.compilerOptions.types.push('jest');
-    this.typeScriptService.writeTSConfigJson(tsconfig);
+    if (tsconfig != null) {
+      tsconfig.compilerOptions.types.push('jest');
+      this.typeScriptService.writeTSConfigJson(tsconfig);
+    }
+  }
+
+  createIndexSpecFile(fileExt: string): void {
+    const src = this.utilsService.resolve(['src']);
+    this.utilsService.createDirectoryIfNotExists(src);
+    const indexSpec = this.utilsService.resolve(['src', `index.spec.${fileExt}`]);
+    this.utilsService.writeFile(indexSpec, `console.log('new npm project')`);
   }
 }

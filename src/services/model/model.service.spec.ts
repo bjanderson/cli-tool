@@ -1,3 +1,4 @@
+import { FileExtension } from '../../enums/file-extensions';
 import { ModelService } from './model.service';
 
 const utilsService: any = {
@@ -30,7 +31,7 @@ describe('ModelService()', () => {
       const expected = {
         camel: 'testModel',
         file: 'src/models/test-model/test-model.model.ts',
-        fileExt: 'ts',
+        fileExt: FileExtension.TS,
         folder: 'src/models/test-model',
         index: 'src/models/test-model/index.ts',
         kabob: 'test-model',
@@ -48,7 +49,7 @@ describe('ModelService()', () => {
       const expected = {
         camel: 'testModel',
         file: 'src/models/test-model/test-model.model.js',
-        fileExt: 'js',
+        fileExt: FileExtension.JS,
         folder: 'src/models/test-model',
         index: 'src/models/test-model/index.js',
         kabob: 'test-model',
@@ -82,7 +83,7 @@ describe('ModelService()', () => {
       const spy = spyOn(generator.utilsService, 'createDirectoryIfNotExists').and.callThrough();
       const config = {
         folder: 'test-model',
-        fileExt: 'ts',
+        fileExt: FileExtension.TS,
       };
       generator.createNewModel(config);
       expect(spy).toHaveBeenCalledWith(config.folder);
@@ -92,7 +93,7 @@ describe('ModelService()', () => {
       const spy = spyOn(generator, 'createModelsIndexIfNotExists').and.callThrough();
       const config = {
         folder: 'test-model',
-        fileExt: 'ts',
+        fileExt: FileExtension.TS,
       };
       generator.createNewModel(config);
       expect(spy).toHaveBeenCalledWith(config);
@@ -102,7 +103,7 @@ describe('ModelService()', () => {
       const spy = spyOn(generator, 'createJSModel').and.callThrough();
       const config = {
         folder: 'test-model',
-        fileExt: 'js',
+        fileExt: FileExtension.JS,
       };
       generator.createNewModel(config);
       expect(spy).toHaveBeenCalledWith(config);
@@ -112,7 +113,7 @@ describe('ModelService()', () => {
       const spy = spyOn(generator, 'createTSModel').and.callThrough();
       const config = {
         folder: 'test-model',
-        fileExt: 'ts',
+        fileExt: FileExtension.TS,
       };
       generator.createNewModel(config);
       expect(spy).toHaveBeenCalledWith(config);
@@ -122,7 +123,7 @@ describe('ModelService()', () => {
       const spy = spyOn(generator, 'createModelSpec').and.callThrough();
       const config = {
         folder: 'test-model',
-        fileExt: 'ts',
+        fileExt: FileExtension.TS,
       };
       generator.createNewModel(config);
       expect(spy).toHaveBeenCalledWith(config);
@@ -132,7 +133,7 @@ describe('ModelService()', () => {
       const spy = spyOn(generator, 'createModelIndex').and.callThrough();
       const config = {
         folder: 'test-model',
-        fileExt: 'ts',
+        fileExt: FileExtension.TS,
       };
       generator.createNewModel(config);
       expect(spy).toHaveBeenCalledWith(config);
@@ -142,7 +143,7 @@ describe('ModelService()', () => {
       const spy = spyOn(generator, 'updateModelsIndex').and.callThrough();
       const config = {
         folder: 'test-model',
-        fileExt: 'ts',
+        fileExt: FileExtension.TS,
       };
       generator.createNewModel(config);
       expect(spy).toHaveBeenCalledWith(config);

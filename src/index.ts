@@ -2,7 +2,6 @@
 
 import { App } from './app';
 import {
-  CLIService,
   JestService,
   ModelService,
   NpmService,
@@ -31,7 +30,7 @@ const prettierServiceInstance = new PrettierService(
   utilsServiceInstance
 );
 
-const cliServiceInstance = new CLIService(
+const app = new App(
   jestServiceInstance,
   modelServiceInstance,
   npmServiceInstance,
@@ -42,5 +41,5 @@ const cliServiceInstance = new CLIService(
 );
 
 const args = process.argv.slice(2).map((arg) => arg.toLocaleLowerCase());
-const app = new App(cliServiceInstance);
+
 app.run(args);

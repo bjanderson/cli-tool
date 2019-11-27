@@ -1,4 +1,5 @@
 import { camelFromKabobOrPascal, lowerize, pascalFromKabobOrCamel } from '@lernato/common';
+import { FileExtension } from '../../enums/file-extensions';
 import { ServiceConfig } from '../../models';
 import { UtilsService } from '../utils';
 
@@ -9,17 +10,12 @@ export class ServiceService {
     const serviceName = args.shift();
     if (serviceName.startsWith('-')) {
       console.error('Invalid service name');
-      process.exit(1);
+      this.utilsService.exit(1);
     }
-    const fileExt = this.getFileExt(args);
+    const fileExt = this.utilsService.getFileExtension(args);
     const servicesFolder = this.getServicesFolder(args);
     const serviceConfig = this.createServiceConfig(serviceName, fileExt, servicesFolder);
     this.createNewService(serviceConfig);
-  }
-
-  getFileExt(args: string[]): string {
-    const i = args.findIndex((arg) => arg === '-j' || arg === '--vanillajs');
-    return i < 0 ? 'ts' : 'js';
   }
 
   getServicesFolder(args: string[]): string {
@@ -27,7 +23,11 @@ export class ServiceService {
     return i < 0 ? ServiceConfig.defaultServicesFolder : args[i + 1];
   }
 
-  createServiceConfig(name: string, fileExt: string, servicesLocation: string): ServiceConfig {
+  createServiceConfig(
+    name: string,
+    fileExt: FileExtension,
+    servicesLocation: string
+  ): ServiceConfig {
     const camel = camelFromKabobOrPascal(name);
     const kabob = lowerize(name);
     const pascal = pascalFromKabobOrCamel(name);
@@ -60,7 +60,7 @@ export class ServiceService {
   createNewService(config: ServiceConfig): void {
     this.utilsService.createDirectoryIfNotExists(config.folder);
     this.createServicesIndexIfNotExists(config);
-    if (config.fileExt === 'js') {
+    if (config.fileExt === FileExtension.JS) {
       this.createJSService(config);
       this.createJSServiceSpec(config);
     } else {

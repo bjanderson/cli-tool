@@ -1,4 +1,5 @@
 import { camelFromKabobOrPascal, lowerize, pascalFromKabobOrCamel } from '@lernato/common';
+import { FileExtension } from '../../enums/file-extensions';
 import { ModelConfig } from '../../models';
 import { UtilsService } from '../utils';
 
@@ -9,17 +10,12 @@ export class ModelService {
     const modelName = args.shift();
     if (modelName.startsWith('-')) {
       console.error('Invalid model name');
-      process.exit(1);
+      this.utilsService.exit(1);
     }
-    const fileExt = this.getFileExt(args);
+    const fileExt = this.utilsService.getFileExtension(args);
     const modelsFolder = this.getModelsFolder(args);
     const modelConfig = this.createModelConfig(modelName, fileExt, modelsFolder);
     this.createNewModel(modelConfig);
-  }
-
-  getFileExt(args: string[]): string {
-    const i = args.findIndex((arg) => arg === '-j' || arg === '--vanillajs');
-    return i < 0 ? 'ts' : 'js';
   }
 
   getModelsFolder(args: string[]): string {
@@ -27,7 +23,7 @@ export class ModelService {
     return i < 0 ? ModelConfig.defaultModelsFolder : args[i + 1];
   }
 
-  createModelConfig(name: string, fileExt: string, modelsLocation: string): ModelConfig {
+  createModelConfig(name: string, fileExt: FileExtension, modelsLocation: string): ModelConfig {
     const camel = camelFromKabobOrPascal(name);
     const kabob = lowerize(name);
     const pascal = pascalFromKabobOrCamel(name);

@@ -1,4 +1,5 @@
 import { DEFAULT_STRING } from '@lernato/common';
+import { FileExtension } from '../../enums/file-extensions';
 import { ServiceConfig } from './service-config.model';
 
 describe('ServiceConfig', () => {
@@ -6,7 +7,7 @@ describe('ServiceConfig', () => {
     const defaults = {
       camel: DEFAULT_STRING,
       file: DEFAULT_STRING,
-      fileExt: DEFAULT_STRING,
+      fileExt: FileExtension.TS,
       folder: DEFAULT_STRING,
       index: DEFAULT_STRING,
       kabob: DEFAULT_STRING,
@@ -39,7 +40,7 @@ describe('ServiceConfig', () => {
       const test = {
         camel: 'test camel',
         file: 'test file',
-        fileExt: 'test fileExt',
+        fileExt: FileExtension.JS,
         folder: 'test folder',
         index: 'test index',
         kabob: 'test kabob',
