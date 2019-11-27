@@ -13,6 +13,7 @@ export class NpmService {
       this.initGitIgnore();
       this.initEditorConfig();
       this.cleanPackageJson();
+      this.createIndexJs();
     }
   }
 
@@ -98,5 +99,12 @@ max_line_length = null
       scripts: { start: 'node src/index.js' },
     };
     this.writePackageJson(obj);
+  }
+
+  createIndexJs(): void {
+    const src = this.utilsService.resolve(['src']);
+    this.utilsService.createDirectoryIfNotExists(src);
+    const indexJs = this.utilsService.resolve(['src', 'index.js']);
+    this.utilsService.writeFile(indexJs, `console.log('new npm project')`);
   }
 }
