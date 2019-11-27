@@ -18,10 +18,9 @@ export class TypeScriptService {
     const json = this.npmService.getPackageJson();
     json.scripts = json.scripts || {};
     json.scripts.build = 'tsc';
-
+    json.scripts.start = 'node dist/index.js';
     json.scripts.lint = `tslint --project "."`;
     json.scripts.watch = 'npm-watch';
-
     json.watch = {
       build: {
         patterns: ['src'],

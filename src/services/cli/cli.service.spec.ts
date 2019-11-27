@@ -8,6 +8,10 @@ const modelService: any = {
   createModel: () => undefined,
 };
 
+const npmService: any = {
+  init: () => undefined,
+};
+
 const prettierService: any = {
   init: () => undefined,
 };
@@ -29,6 +33,7 @@ function init() {
   service = new CLIService(
     jestService,
     modelService,
+    npmService,
     prettierService,
     serviceService,
     typeScriptService,

@@ -1,5 +1,6 @@
 import { JestService } from '../jest';
 import { ModelService } from '../model';
+import { NpmService } from '../npm';
 import { PrettierService } from '../prettier';
 import { ServiceService } from '../service';
 import { TypeScriptService } from '../typescript';
@@ -9,6 +10,7 @@ export class CLIService {
   constructor(
     private jestService: JestService,
     private modelService: ModelService,
+    private npmService: NpmService,
     private prettierService: PrettierService,
     private serviceService: ServiceService,
     private typeScriptService: TypeScriptService,
@@ -60,6 +62,9 @@ export class CLIService {
       case 'prettier':
         this.prettierService.init();
         break;
+      case 'npm':
+        this.npmService.init();
+        break;
       case 'typescript':
         this.typeScriptService.init();
         break;
@@ -102,7 +107,9 @@ Example:
 
 init \tInitialize things in your project
 
-  typescript \tInitialize typesript and tslint
+  npm \tInitialize npm
+
+  typescript \tInitialize typescript and tslint
 
   jest \t\tInitialize jest for unit testing
 

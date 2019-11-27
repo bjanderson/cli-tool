@@ -95,7 +95,7 @@ max_line_length = null
       license: json.license,
       author: json.author,
       private: true,
-      scripts: json.scripts,
+      scripts: { start: 'node src/index.js' },
     };
     this.writePackageJson(obj);
   }

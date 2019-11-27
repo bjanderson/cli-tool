@@ -34,6 +34,7 @@ const prettierServiceInstance = new PrettierService(
 const cliServiceInstance = new CLIService(
   jestServiceInstance,
   modelServiceInstance,
+  npmServiceInstance,
   prettierServiceInstance,
   serviceServiceInstance,
   typeScriptServiceInstance,
