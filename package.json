@@ -7,7 +7,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "lernato-cli": "./dist/index.js"
+    "lernato-factory": "./dist/index.js"
   },
   "watch": {
     "build": {

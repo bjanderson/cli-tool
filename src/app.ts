@@ -83,7 +83,7 @@ export class App {
   showUsage() {
     const usage = `
 #################
-lernato-cli usage
+lernato-factory usage
 #################
 
 Commands:
@@ -102,8 +102,8 @@ new \tCreate new things
 
 Example:
 
-  lernato-cli new model my-model -f path/to/my-models-folder -j
-  lernato-cli new service my-service -f path/to/my-services-folder -j
+  lernato-factory new model my-model -f path/to/my-models-folder -j
+  lernato-factory new service my-service -f path/to/my-services-folder -j
 
 -----------------------------
 
@@ -119,7 +119,7 @@ init \tInitialize things in your project
 
 Example:
 
-  lernato-cli init typescript
+  lernato-factory init typescript
 
 -----------------------------
 `;
