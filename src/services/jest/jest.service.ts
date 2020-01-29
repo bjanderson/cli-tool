@@ -1,4 +1,4 @@
-import { FileExtension } from '../../enums/file-extensions';
+import { FileExtension, NpmDependencyType } from '../../enums';
 import { NpmService } from '../npm';
 import { TypeScriptService } from '../typescript';
 import { UtilsService } from '../utils';
@@ -38,7 +38,7 @@ export class JestService {
     if (!isVanillaJs) {
       packages = packages.concat(['ts-jest', '@types/jest']);
     }
-    this.npmService.installPackages(packages);
+    this.npmService.installPackages(packages, NpmDependencyType.DEV_DEPENDENCY);
   }
 
   createJestConfig(isVanillaJs: boolean, fileExt: FileExtension): void {

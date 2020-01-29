@@ -1,5 +1,5 @@
 import { getObject, getString, getValueOrDefault } from '@lernato/common';
-import { FileExtension } from '../../enums/file-extensions';
+import { FileExtension } from '../../enums';
 
 export class ModelConfig {
   static readonly defaultModelsFolder = 'src/models';

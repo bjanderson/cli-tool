@@ -1,4 +1,4 @@
-import { FileExtension } from '../../enums/file-extensions';
+import { FileExtension, NpmDependencyType } from '../../enums';
 import { NpmService } from '../npm';
 import { TypeScriptService } from '../typescript';
 import { UtilsService } from '../utils';
@@ -26,7 +26,7 @@ export class PrettierService {
     if (!isVanillaJs) {
       packages = packages.concat(['tslint-config-prettier', 'tslint-plugin-prettier']);
     }
-    this.npmService.installPackages(packages);
+    this.npmService.installPackages(packages, NpmDependencyType.DEV_DEPENDENCY);
   }
 
   createPrettierConfig(): void {

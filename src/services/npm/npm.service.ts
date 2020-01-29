@@ -1,3 +1,4 @@
+import { NpmDependencyType } from '../../enums';
 import { UtilsService } from '../utils';
 
 export class NpmService {
@@ -17,8 +18,9 @@ export class NpmService {
     }
   }
 
-  installPackages(packages: string[]): void {
-    const command = `npm i -D --ignore-scripts ${packages.join(' ')}`;
+  installPackages(packages: string[], packageType: NpmDependencyType): void {
+    const type = packageType === NpmDependencyType.DEPENDENCY ? '-S' : '-D';
+    const command = `npm i ${type} --ignore-scripts ${packages.join(' ')}`;
     this.utilsService.execute(command);
   }
 

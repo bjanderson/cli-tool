@@ -1,3 +1,4 @@
+import { NpmDependencyType } from '../../enums';
 import { NpmService } from '../npm';
 import { UtilsService } from '../utils';
 
@@ -33,7 +34,7 @@ export class TypeScriptService {
 
   installPackages(): void {
     const packages = ['typescript', 'ts-lint', '@types/node', 'npm-watch', 'tslint-config-airbnb'];
-    this.npmService.installPackages(packages);
+    this.npmService.installPackages(packages, NpmDependencyType.DEV_DEPENDENCY);
   }
 
   createTSConfig(): void {
@@ -63,13 +64,14 @@ export class TypeScriptService {
         deprecation: {
           severity: 'warning',
         },
+        indent: [true, 'spaces', 2],
         'interface-name': true,
         'max-classes-per-file': [true, 1, 'exclude-class-expressions'],
         'member-access': false,
         'member-ordering': [
           true,
           {
-            order: ['static-field', 'instance-field', 'static-method', 'instance-method'],
+            order: 'fields-first',
           },
         ],
         'no-consecutive-blank-lines': true,

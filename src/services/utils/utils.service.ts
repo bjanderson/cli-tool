@@ -1,4 +1,4 @@
-import { FileExtension } from '../../enums/file-extensions';
+import { FileExtension } from '../../enums';
 import { IStaticFunctionWrapper } from '../../static-function-wrapper';
 
 export class UtilsService {

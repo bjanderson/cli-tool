@@ -1,3 +1,4 @@
+export * from './express-server';
 export * from './jest';
 export * from './model';
 export * from './npm';

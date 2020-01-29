@@ -1,5 +1,5 @@
 import { camelFromKabobOrPascal, lowerize, pascalFromKabobOrCamel } from '@lernato/common';
-import { FileExtension } from '../../enums/file-extensions';
+import { FileExtension } from '../../enums';
 import { ModelConfig } from '../../models';
 import { UtilsService } from '../utils';
 

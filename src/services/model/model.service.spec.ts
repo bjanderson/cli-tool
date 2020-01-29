@@ -1,4 +1,4 @@
-import { FileExtension } from '../../enums/file-extensions';
+import { FileExtension } from '../../enums';
 import { ModelService } from './model.service';
 
 const utilsService: any = {

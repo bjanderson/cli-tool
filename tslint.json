@@ -13,6 +13,7 @@
     "deprecation": {
       "severity": "warning"
     },
+    "indent": [true, "spaces", 2],
     "interface-name": true,
     "max-classes-per-file": [true, 1, "exclude-class-expressions"],
     "member-access": false,

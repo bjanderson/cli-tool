@@ -1,5 +1,5 @@
 import { DEFAULT_STRING } from '@lernato/common';
-import { FileExtension } from '../../enums/file-extensions';
+import { FileExtension } from '../../enums';
 import { ServiceConfig } from './service-config.model';
 
 describe('ServiceConfig', () => {

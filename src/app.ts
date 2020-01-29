@@ -1,4 +1,5 @@
 import {
+  ExpressServerService,
   JestService,
   ModelService,
   NpmService,
@@ -10,6 +11,7 @@ import {
 
 export class App {
   constructor(
+    private expressServerService: ExpressServerService,
     private jestService: JestService,
     private modelService: ModelService,
     private npmService: NpmService,
@@ -70,6 +72,9 @@ export class App {
       case 'typescript':
         this.typeScriptService.init(args);
         break;
+      case 'express-server':
+        this.expressServerService.init(args);
+        break;
       default:
         this.showUsage();
         this.utilsService.exit(1);
@@ -83,7 +88,7 @@ export class App {
   showUsage() {
     const usage = `
 #################
-lernato-factory usage
+lernato-cli usage
 #################
 
 Commands:
@@ -102,8 +107,8 @@ new \tCreate new things
 
 Example:
 
-  lernato-factory new model my-model -f path/to/my-models-folder -j
-  lernato-factory new service my-service -f path/to/my-services-folder -j
+  lernato-cli new model my-model -f path/to/my-models-folder -j
+  lernato-cli new service my-service -f path/to/my-services-folder -j
 
 -----------------------------
 
@@ -117,9 +122,11 @@ init \tInitialize things in your project
 
   prettier \tInitialize prettier for code formatting
 
+  express-server \tInitialize a nodejs express server
+
 Example:
 
-  lernato-factory init typescript
+  lernato-cli init typescript
 
 -----------------------------
 `;
