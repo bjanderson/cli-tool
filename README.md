@@ -30,9 +30,9 @@ Create a new model
 lernato-cli new model <model-name>
 ```
 
-```
-options:
+Options:
 
+```
 -f, --models-folder <folder/path>
 specify the high-level folder that all models are stored in (default: src/models)
 
@@ -46,9 +46,9 @@ Create a new service
 lernato-cli new service <service-name>
 ```
 
-```
-options:
+Options:
 
+```
 -f, --services-folder <folder/path>
 specify the high-level folder that all services are stored in (default: src/services)
 
