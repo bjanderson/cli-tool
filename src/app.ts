@@ -1,5 +1,4 @@
 import {
-  ExpressServerService,
   JestService,
   ModelService,
   NpmService,
@@ -11,7 +10,6 @@ import {
 
 export class App {
   constructor(
-    private expressServerService: ExpressServerService,
     private jestService: JestService,
     private modelService: ModelService,
     private npmService: NpmService,
@@ -72,9 +70,6 @@ export class App {
       case 'typescript':
         this.typeScriptService.init(args);
         break;
-      case 'express-server':
-        this.expressServerService.init(args);
-        break;
       default:
         this.showUsage();
         this.utilsService.exit(1);
@@ -87,19 +82,21 @@ export class App {
 
   showUsage() {
     const usage = `
-#################
-lernato-cli usage
-#################
+###########
+lernato-cli
+###########
 
-Commands:
+Usage:
+
+-h, --help \tShow these usage instructions
 
 -----------------------------
 
 new \tCreate new things
 
-  model <model-name> \tCreate a new model
-    -f, --models-folder <folder/path> \tthe high-level folder that all models are stored in (default: src/models)
-    -j, --vanillajs \t\t\tcreate files as vanilla JavaScript instead of TypeScript
+  model <model-name> \t\tCreate a new model
+    -f, --models-folder <folder/path> \t\tthe high-level folder that all models are stored in (default: src/models)
+    -j, --vanillajs \t\t\t\tcreate files as vanilla JavaScript instead of TypeScript
 
   service <service-name> \tCreate a new service
     -f, --services-folder <folder/path> \tthe high-level folder that all services are stored in (default: src/services)
@@ -114,15 +111,13 @@ Example:
 
 init \tInitialize things in your project
 
-  npm \tInitialize npm
+  npm \t\tInitialize npm
 
   typescript \tInitialize typescript and tslint
 
   jest \t\tInitialize jest for unit testing
 
   prettier \tInitialize prettier for code formatting
-
-  express-server \tInitialize a nodejs express server
 
 Example:
 

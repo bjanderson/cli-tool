@@ -6,8 +6,8 @@ These are utility functions to create models.
 
 To install the package:
 
-    npm install -g @lernato/model-generator
+    npm install -g @lernato/cli
 
 To create a new model run:
 
-    model -c kabob-case-model-name [another-kabob-case-model-name]
+    lernato-cli model -c kabob-case-model-name [another-kabob-case-model-name]
