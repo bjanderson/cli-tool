@@ -1,4 +1,4 @@
-import { NpmDependencyType } from '../../enums';
+import { FileExtension, NpmDependencyType } from '../../enums';
 import { UtilsService } from '../utils';
 
 export class NpmService {
@@ -14,7 +14,8 @@ export class NpmService {
       this.initGitIgnore();
       this.initEditorConfig();
       this.cleanPackageJson();
-      this.createIndexJs();
+      const fileExtension = this.utilsService.getFileExtension(args);
+      this.createIndexJs(fileExtension);
     }
   }
 
@@ -103,10 +104,10 @@ max_line_length = null
     this.writePackageJson(obj);
   }
 
-  createIndexJs(): void {
+  createIndexJs(fileExtension: FileExtension): void {
     const src = this.utilsService.resolve(['src']);
     this.utilsService.createDirectoryIfNotExists(src);
-    const indexJs = this.utilsService.resolve(['src', 'index.js']);
+    const indexJs = this.utilsService.resolve(['src', `index.${fileExtension}`]);
     this.utilsService.writeFile(indexJs, `console.log('new npm project')`);
   }
 }
