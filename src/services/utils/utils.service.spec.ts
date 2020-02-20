@@ -12,7 +12,7 @@ const staticFunctionWrapper: any = {
 
 let service: any;
 let consoleErrorSpy: any;
-function init() {
+function init(): void {
   service = new UtilsService(staticFunctionWrapper);
   consoleErrorSpy = spyOn(console, 'error').and.returnValue(null);
 }

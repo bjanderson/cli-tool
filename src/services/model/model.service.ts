@@ -6,7 +6,7 @@ import { UtilsService } from '../utils';
 export class ModelService {
   constructor(private utilsService: UtilsService) {}
 
-  createModel(args: string[]) {
+  createModel(args: string[]): void {
     const modelName = args.shift();
     if (modelName.startsWith('-')) {
       console.error('Invalid model name');

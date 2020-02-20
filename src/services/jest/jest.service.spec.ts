@@ -14,7 +14,7 @@ const utilsService: any = {
 };
 
 let service: any;
-function init() {
+function init(): void {
   service = new JestService(npmService, typeScriptService, utilsService);
 }
 

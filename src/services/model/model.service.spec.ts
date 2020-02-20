@@ -11,8 +11,9 @@ const utilsService: any = {
 };
 
 let generator: any;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let consoleLogSpy: any;
-function init() {
+function init(): void {
   generator = new ModelService(utilsService);
   consoleLogSpy = spyOn(console, 'log').and.returnValue(null);
 }

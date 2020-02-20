@@ -80,7 +80,7 @@ export class App {
     return args.includes('-h') || args.includes('--help');
   }
 
-  showUsage() {
+  showUsage(): void {
     const usage = `
 ###########
 lernato-cli

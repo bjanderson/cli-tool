@@ -6,7 +6,7 @@ import { UtilsService } from '../utils';
 export class ServiceService {
   constructor(private utilsService: UtilsService) {}
 
-  createService(args: string[]) {
+  createService(args: string[]): void {
     const serviceName = args.shift();
     if (serviceName.startsWith('-')) {
       console.error('Invalid service name');

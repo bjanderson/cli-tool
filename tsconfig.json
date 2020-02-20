@@ -9,5 +9,6 @@
     "types": ["node", "jest"],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "exclude": ["coverage", "dist", "doc", "design", "node_modules", "**/*.spec.ts"]
 }

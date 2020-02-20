@@ -105,6 +105,7 @@ export class TypeScriptService {
     console.warn(
       'WARNING: Could not find tsconfig.json - make sure you are in your top-level project folder'
     );
+    return {};
   }
 
   writeTSConfigJson(json: any): void {
@@ -120,6 +121,7 @@ export class TypeScriptService {
     console.warn(
       'WARNING: Could not find tslint.json - make sure you are in your top-level project folder'
     );
+    return {};
   }
 
   writeTSLintJson(json: any): void {
