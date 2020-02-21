@@ -1,9 +1,56 @@
-coverage/
-dist/
-node_modules/
-tmp/
+# See http://help.github.com/ignore-files/ for more about ignoring files.
 
-*.tar
-*.gz
+# dependencies
+/node_modules
+
+# compiled output
+/bazel-out
+/coverage
+/dist
+/out-tsc
+/tmp
+
+#cypress
+/cypress/screenshots
+/cypress/videos
+
+#data
+/data/*.json
+
+# profiling files
+chrome-profiler-events*.json
+speed-measure-plugin*.json
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+#packages
 *.bz2
+*.gz
+*.tar
 *.zip
+
+#certs
+*.crt
+*.csr
+*.key
+*.p12
+*.srl
+*.pub
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/typings
+*.log
+npm-debug.log*
+
+# System Files
+.DS_Store
+Thumbs.db
