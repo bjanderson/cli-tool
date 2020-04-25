@@ -2,9 +2,15 @@
 
 A command line program for generating JavaScript and TypeScript projects and boilerplate code.
 
+## Install:
+
+npm i -g @bj.anderson/cli-tool
+
 ## Usage:
 
-Show these usage instructions
+    cli-tool [options]
+
+Show these usage instructions:
 
 ```
 -h, --help
