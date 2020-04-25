@@ -1,4 +1,4 @@
-import { camelFromKabobOrPascal, lowerize, pascalFromKabobOrCamel } from '@lernato/common';
+import { camelFromKabobOrPascal, lowerize, pascalFromKabobOrCamel } from '@bj.anderson/utils';
 import { FileExtension } from '../../enums';
 import { ServiceConfig } from '../../models';
 import { UtilsService } from '../utils';

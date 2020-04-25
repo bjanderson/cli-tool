@@ -1,12 +1,6 @@
-# @lernato/cli
+# cli-tool
 
 A command line program for generating JavaScript and TypeScript projects and boilerplate code.
-
-## Installation
-
-To install the package:
-
-    npm install -g @lernato/cli
 
 ## Usage:
 
@@ -21,13 +15,13 @@ Show these usage instructions
 Create new things
 
 ```
-lernato-cli new
+cli-tool new
 ```
 
 Create a new model
 
 ```
-lernato-cli new model <model-name>
+cli-tool new model <model-name>
 ```
 
 Options:
@@ -43,7 +37,7 @@ create files as vanilla JavaScript instead of TypeScript
 Create a new service
 
 ```
-lernato-cli new service <service-name>
+cli-tool new service <service-name>
 ```
 
 Options:
@@ -59,9 +53,9 @@ create files as vanilla JavaScript instead of TypeScript
 Examples:
 
 ```
-lernato-cli new model my-model
+cli-tool new model my-model
 
-lernato-cli new service my-service -f path/to/my-services-folder -j
+cli-tool new service my-service -f path/to/my-services-folder -j
 ```
 
 ---
@@ -69,31 +63,31 @@ lernato-cli new service my-service -f path/to/my-services-folder -j
 Initialize things in your project
 
 ```
-lernato-cli init <option>
+cli-tool init <option>
 ```
 
 Initialize a vanilla node/npm project
 
 ```
-lernato-cli init npm
+cli-tool init npm
 ```
 
 Initialize a typescript project
 
 ```
-lernato-cli init typescript
+cli-tool init typescript
 ```
 
 Add jest to a project for unit testing
 
 ```
-lernato-cli init jest
+cli-tool init jest
 ```
 
 Add prettier to a project for code formatting
 
 ```
-lernato-cli init prettier
+cli-tool init prettier
 ```
 
 ---

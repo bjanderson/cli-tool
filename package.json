@@ -1,17 +1,17 @@
 {
-  "name": "@lernato/cli",
-  "version": "0.1.4",
+  "name": "@bj.anderson/cli-tool",
+  "version": "1.0.0",
   "description": "A command line program for generating JavaScript and TypeScript projects and boilerplate code.",
-  "author": "Lernato, LLC",
+  "author": "BJ Anderson",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/LernatoLLC/lernato-cli.git"
+    "url": "git@github.com:bjanderson/cli-tool.git"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "lernato-cli": "./dist/index.js"
+    "cli-tool": "./dist/index.js"
   },
   "watch": {
     "build": {
@@ -34,7 +34,7 @@
     "test:cov": "jest --coverage"
   },
   "dependencies": {
-    "@lernato/common": "4.2.0",
+    "@bj.anderson/utils": "5.0.1",
     "fs-extra": "9.0.0"
   },
   "devDependencies": {

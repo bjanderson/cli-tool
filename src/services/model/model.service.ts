@@ -1,4 +1,4 @@
-import { camelFromKabobOrPascal, lowerize, pascalFromKabobOrCamel } from '@lernato/common';
+import { camelFromKabobOrPascal, lowerize, pascalFromKabobOrCamel } from '@bj.anderson/utils';
 import { FileExtension } from '../../enums';
 import { ModelConfig } from '../../models';
 import { UtilsService } from '../utils';
@@ -67,7 +67,7 @@ export class ModelService {
   }
 
   createJSModel(config: ModelConfig): void {
-    const text = `import { getObject, getString } from '@lernato/common';
+    const text = `import { getObject, getString } from '@bj.anderson/utils';
 
 export class ${config.pascal} {
   constructor(o) {
@@ -80,7 +80,7 @@ export class ${config.pascal} {
   }
 
   createTSModel(config: ModelConfig): void {
-    const text = `import { getObject, getString } from '@lernato/common';
+    const text = `import { getObject, getString } from '@bj.anderson/utils';
 
 export class ${config.pascal} {
   value: string;
@@ -95,7 +95,7 @@ export class ${config.pascal} {
   }
 
   createModelSpec(config: ModelConfig): void {
-    const text = `import { DEFAULT_STRING } from '@lernato/common';
+    const text = `import { DEFAULT_STRING } from '@bj.anderson/utils';
 import { ${config.pascal} } from './${config.kabob}.model';
 
 describe('${config.pascal}', () => {

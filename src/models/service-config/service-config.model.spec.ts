@@ -1,4 +1,4 @@
-import { DEFAULT_STRING } from '@lernato/common';
+import { DEFAULT_STRING } from '@bj.anderson/utils';
 import { FileExtension } from '../../enums';
 import { ServiceConfig } from './service-config.model';
 
