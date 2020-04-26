@@ -1,9 +1,12 @@
 import { FileExtension } from '../../enums';
 import { ModelService } from './model.service';
+import { ModelConfig } from '../../models';
 
 const utilsService: any = {
   createDirectory: () => undefined,
   createDirectoryIfNotExists: () => undefined,
+  exit: () => undefined,
+  getFileExtension: () => FileExtension.TS,
   pathExists: () => false,
   readFile: () => undefined,
   resolve: (pathSegments: string[]) => pathSegments.join('/'),
@@ -12,13 +15,96 @@ const utilsService: any = {
 
 let generator: any;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-let consoleLogSpy: any;
 function init(): void {
   generator = new ModelService(utilsService);
-  consoleLogSpy = spyOn(console, 'log').and.returnValue(null);
+  spyOn(console, 'log').and.returnValue(null);
+  spyOn(console, 'warn').and.returnValue(null);
+  spyOn(console, 'error').and.returnValue(null);
 }
 
 describe('ModelService()', () => {
+  describe('createModel()', () => {
+    beforeEach(() => {
+      init();
+      generator.getModelsFolder = () => 'test/folder/';
+      generator.createNewModel = () => undefined;
+      generator.createModelConfig = () => 'test-model-config';
+    });
+
+    it('is a function', () => {
+      expect(typeof generator.createModel).toEqual('function');
+    });
+
+    it('calls console.error() if given an invalid model name', () => {
+      const args = ['-test'];
+      generator.createModel(args);
+      expect(console.error).toHaveBeenCalledWith('Invalid model name');
+    });
+
+    it('calls utilsService.exit() if given an invalid model name', () => {
+      const spy = spyOn(generator.utilsService, 'exit').and.callThrough();
+      const args = ['-test'];
+      generator.createModel(args);
+      expect(spy).toHaveBeenCalledWith(1);
+    });
+
+    it('calls utilsService.getFileExtension()', () => {
+      const spy = spyOn(generator.utilsService, 'getFileExtension').and.callThrough();
+      const args = ['test'];
+      generator.createModel(args);
+      expect(spy).toHaveBeenCalledWith(args);
+    });
+
+    it('calls getModelsFolder()', () => {
+      const spy = spyOn(generator, 'getModelsFolder').and.callThrough();
+      const args = ['test'];
+      generator.createModel(args);
+      expect(spy).toHaveBeenCalledWith(args);
+    });
+
+    it('calls createModelConfig()', () => {
+      const spy = spyOn(generator, 'createModelConfig').and.callThrough();
+      const args = ['test'];
+      generator.createModel(args);
+      expect(spy).toHaveBeenCalledWith('test', FileExtension.TS, 'test/folder/');
+    });
+
+    it('calls createNewModel()', () => {
+      const spy = spyOn(generator, 'createNewModel').and.callThrough();
+      const args = ['test'];
+      generator.createModel(args);
+      expect(spy).toHaveBeenCalledWith('test-model-config');
+    });
+  });
+
+  describe('getModelsFolder()', () => {
+    beforeEach(() => {
+      init();
+    });
+
+    it('is a function', () => {
+      expect(typeof generator.getModelsFolder).toEqual('function');
+    });
+
+    it('returns the default models folder', () => {
+      const args = ['test'];
+      const result: any = generator.getModelsFolder(args);
+      expect(result).toEqual(ModelConfig.defaultModelsFolder);
+    });
+
+    it('returns the given models folder (-f)', () => {
+      const args = ['test', '-f', 'test-folder'];
+      const result: any = generator.getModelsFolder(args);
+      expect(result).toEqual('test-folder');
+    });
+
+    it('returns the given models folder (--models-folder)', () => {
+      const args = ['test', '--models-folder', 'test-folder'];
+      const result: any = generator.getModelsFolder(args);
+      expect(result).toEqual('test-folder');
+    });
+  });
+
   describe('createModelConfig()', () => {
     beforeEach(() => {
       init();

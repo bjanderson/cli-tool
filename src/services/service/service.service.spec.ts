@@ -1,9 +1,12 @@
 import { FileExtension } from '../../enums';
 import { ServiceService } from './service.service';
+import { ServiceConfig } from '../../models';
 
 const utilsService: any = {
   createDirectory: () => undefined,
   createDirectoryIfNotExists: () => undefined,
+  exit: () => undefined,
+  getFileExtension: () => FileExtension.TS,
   pathExists: () => false,
   readFile: () => undefined,
   resolve: (pathSegments: string[]) => pathSegments.join('/'),
@@ -12,13 +15,96 @@ const utilsService: any = {
 
 let generator: any;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-let consoleLogSpy: any;
 function init(): void {
   generator = new ServiceService(utilsService);
-  consoleLogSpy = spyOn(console, 'log').and.returnValue(null);
+  spyOn(console, 'log').and.returnValue(null);
+  spyOn(console, 'warn').and.returnValue(null);
+  spyOn(console, 'error').and.returnValue(null);
 }
 
 describe('ServiceService()', () => {
+  describe('createService()', () => {
+    beforeEach(() => {
+      init();
+      generator.getServicesFolder = () => 'test/folder/';
+      generator.createNewService = () => undefined;
+      generator.createServiceConfig = () => 'test-service-config';
+    });
+
+    it('is a function', () => {
+      expect(typeof generator.createService).toEqual('function');
+    });
+
+    it('calls console.error() if given an invalid service name', () => {
+      const args = ['-test'];
+      generator.createService(args);
+      expect(console.error).toHaveBeenCalledWith('Invalid service name');
+    });
+
+    it('calls utilsService.exit() if given an invalid service name', () => {
+      const spy = spyOn(generator.utilsService, 'exit').and.callThrough();
+      const args = ['-test'];
+      generator.createService(args);
+      expect(spy).toHaveBeenCalledWith(1);
+    });
+
+    it('calls utilsService.getFileExtension()', () => {
+      const spy = spyOn(generator.utilsService, 'getFileExtension').and.callThrough();
+      const args = ['test'];
+      generator.createService(args);
+      expect(spy).toHaveBeenCalledWith(args);
+    });
+
+    it('calls getServicesFolder()', () => {
+      const spy = spyOn(generator, 'getServicesFolder').and.callThrough();
+      const args = ['test'];
+      generator.createService(args);
+      expect(spy).toHaveBeenCalledWith(args);
+    });
+
+    it('calls createServiceConfig()', () => {
+      const spy = spyOn(generator, 'createServiceConfig').and.callThrough();
+      const args = ['test'];
+      generator.createService(args);
+      expect(spy).toHaveBeenCalledWith('test', FileExtension.TS, 'test/folder/');
+    });
+
+    it('calls createNewService()', () => {
+      const spy = spyOn(generator, 'createNewService').and.callThrough();
+      const args = ['test'];
+      generator.createService(args);
+      expect(spy).toHaveBeenCalledWith('test-service-config');
+    });
+  });
+
+  describe('getServicesFolder()', () => {
+    beforeEach(() => {
+      init();
+    });
+
+    it('is a function', () => {
+      expect(typeof generator.getServicesFolder).toEqual('function');
+    });
+
+    it('returns the default services folder', () => {
+      const args = ['test'];
+      const result: any = generator.getServicesFolder(args);
+      expect(result).toEqual(ServiceConfig.defaultServicesFolder);
+    });
+
+    it('returns the given services folder (-f)', () => {
+      const args = ['test', '-f', 'test-folder'];
+      const result: any = generator.getServicesFolder(args);
+      expect(result).toEqual('test-folder');
+    });
+
+    it('returns the given services folder (--services-folder)', () => {
+      const args = ['test', '--services-folder', 'test-folder'];
+      const result: any = generator.getServicesFolder(args);
+      expect(result).toEqual('test-folder');
+    });
+  });
+
   describe('createServiceConfig()', () => {
     beforeEach(() => {
       init();
@@ -229,7 +315,7 @@ describe('ServiceService()', () => {
       const expectedText = `import { TestServiceService } from './test-service.service';
 
 let service;
-function init() {
+function init(): void {
   service = new TestServiceService();
 }
 
@@ -269,7 +355,7 @@ describe('TestServiceService', () => {
       const expectedText = `import { TestServiceService } from './test-service.service';
 
 let service: any;
-function init() {
+function init(): void {
   service = new TestServiceService();
 }
 

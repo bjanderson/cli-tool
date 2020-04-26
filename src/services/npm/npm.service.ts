@@ -49,6 +49,13 @@ tmp/
 *.gz
 *.bz2
 *.zip
+
+*.crt
+*.csr
+*.key
+*.p12
+*.srl
+*.pub
 `;
       this.utilsService.writeFile(this.gitignoreFile, text);
     }
@@ -57,38 +64,46 @@ tmp/
   initEditorConfig(): void {
     if (!this.hasEditorConfig()) {
       const text = `
+# Editor configuration, see http://editorconfig.org
 root = true
 
 [*]
-end_of_line = lf
 charset = utf-8
-insert_final_newline = true
-trim_trailing_whitespace = true
+end_of_line = lf
 indent_style = space
 indent_size = 2
+insert_final_newline = true
+max_line_length = 100
+quote_type = single
+spaces_around_brackets = indside
+spaces_around_operators = true
+trim_trailing_whitespace = true
 
 [{*.md,*.json}]
-max_line_length = null
+max_line_length = off
+
+# The JSON files contain newlines inconsistently
+[*.json]
+insert_final_newline = ignore
+
+[*.md]
+trim_trailing_whitespace = false
+
+# Minified JavaScript files shouldn't be changed
+[**.min.js]
+indent_style = ignore
+insert_final_newline = ignore
 `;
       this.utilsService.writeFile(this.editorconfigFile, text);
     }
   }
 
   getPackageJson(): any {
-    if (!this.utilsService.pathExists(this.packageJsonFile)) {
-      console.error(
-        'Error: Could not find package.json - make sure you are in your top-level project folder'
-      );
-      this.utilsService.exit(1);
-    }
-    const str = this.utilsService.readFile(this.packageJsonFile);
-    const json = JSON.parse(str);
-    return json;
+    return this.utilsService.getFileAsJson(this.packageJsonFile);
   }
 
   writePackageJson(json: any): void {
-    const str = JSON.stringify(json, null, 2);
-    this.utilsService.writeFile(this.packageJsonFile, str);
+    this.utilsService.writeJsonFile(this.packageJsonFile, json);
   }
 
   cleanPackageJson(): void {

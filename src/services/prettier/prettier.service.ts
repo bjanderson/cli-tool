@@ -1,31 +1,19 @@
-import { FileExtension, NpmDependencyType } from '../../enums';
+import { NpmDependencyType } from '../../enums';
 import { NpmService } from '../npm';
-import { TypeScriptService } from '../typescript';
 import { UtilsService } from '../utils';
 
 export class PrettierService {
   public prettierConfigFile = this.utilsService.resolve(['.prettierrc']);
 
-  constructor(
-    private npmService: NpmService,
-    private typeScriptService: TypeScriptService,
-    private utilsService: UtilsService
-  ) {}
+  constructor(private npmService: NpmService, private utilsService: UtilsService) {}
 
-  init(args: string[]): void {
-    const isVanillaJs = this.utilsService.getFileExtension(args) === FileExtension.JS;
-    this.installPackages(isVanillaJs);
+  init(/* args: string[] */): void {
+    this.installPackages();
     this.createPrettierConfig();
-    if (!isVanillaJs) {
-      this.updateTSLintJson();
-    }
   }
 
-  installPackages(isVanillaJs: boolean): void {
-    let packages = ['prettier'];
-    if (!isVanillaJs) {
-      packages = packages.concat(['tslint-config-prettier', 'tslint-plugin-prettier']);
-    }
+  installPackages(): void {
+    const packages = ['prettier'];
     this.npmService.installPackages(packages, NpmDependencyType.DEV_DEPENDENCY);
   }
 
@@ -50,17 +38,6 @@ export class PrettierService {
   }
 
   writePrettierConfig(json: any): void {
-    const str = JSON.stringify(json, null, 2);
-    this.utilsService.writeFile(this.prettierConfigFile, str);
-  }
-
-  updateTSLintJson(): void {
-    const tslint = this.typeScriptService.getTSLintJson();
-    if (tslint != null) {
-      tslint.extends.push('tslint-config-prettier');
-      tslint.extends.push('tslint-plugin-prettier');
-      tslint.rules.prettier = true;
-      this.typeScriptService.writeTSLintJson(tslint);
-    }
+    this.utilsService.writeJsonFile(this.prettierConfigFile, json);
   }
 }

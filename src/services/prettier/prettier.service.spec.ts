@@ -2,8 +2,6 @@ import { PrettierService } from './prettier.service';
 
 const npmService: any = {};
 
-const typeScriptService: any = {};
-
 const utilsService: any = {
   createDirectory: () => undefined,
   createDirectoryIfNotExists: () => undefined,
@@ -15,7 +13,7 @@ const utilsService: any = {
 
 let service: any;
 function init(): void {
-  service = new PrettierService(npmService, typeScriptService, utilsService);
+  service = new PrettierService(npmService, utilsService);
 }
 
 describe('PrettierService()', () => {

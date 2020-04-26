@@ -4,11 +4,6 @@ import { IStaticFunctionWrapper } from '../../static-function-wrapper';
 export class UtilsService {
   constructor(private staticFunctionWrapper: IStaticFunctionWrapper) {}
 
-  getFileExtension(args: string[]): FileExtension {
-    const i = args.findIndex((arg) => arg === '-j' || arg === '--vanillajs');
-    return i > -1 ? FileExtension.JS : FileExtension.TS;
-  }
-
   createDirectory(path: string): void {
     try {
       this.staticFunctionWrapper.mkdirpSync(path);
@@ -29,6 +24,28 @@ export class UtilsService {
 
   exit(code: number): void {
     this.staticFunctionWrapper.process.exit(code);
+  }
+
+  getFileAsJson(
+    filename: string,
+    message = `WARNING: Could not find ${filename} - make sure you are in your top-level project folder`
+  ): any {
+    if (this.pathExists(filename)) {
+      try {
+        const str = this.readFile(filename);
+        return JSON.parse(str);
+      } catch (err) {
+        console.error(`ERROR: Could not read file ${filename}`);
+        return {};
+      }
+    }
+    console.warn(message);
+    return {};
+  }
+
+  getFileExtension(args: string[]): FileExtension {
+    const i = args.findIndex((arg) => arg === '-j' || arg === '--vanillajs');
+    return i > -1 ? FileExtension.JS : FileExtension.TS;
   }
 
   pathExists(path: string): boolean {
@@ -52,6 +69,11 @@ export class UtilsService {
       console.error(err);
       this.exit(1);
     }
+  }
+
+  writeJsonFile(filename: string, json: any): void {
+    const str = JSON.stringify(json, null, 2);
+    this.writeFile(filename, str);
   }
 
   execute(command: string): void {

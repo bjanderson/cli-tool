@@ -1,5 +1,10 @@
 module.exports = {
-  collectCoverageFrom: ['<rootDir>/src/**/*.ts', '!<rootDir>/src/static-wrapper.ts'],
+  collectCoverageFrom: [
+    '<rootDir>/src/**/*.ts',
+    '!<rootDir>/src/static-function-wrapper.ts',
+    '!<rootDir>/src/index.ts',
+    '!<rootDir>/src/**/index.ts',
+  ],
 
   coverageDirectory: 'coverage',
 

@@ -11,11 +11,14 @@ import {
   UtilsService,
 } from './services';
 import { staticFunctionWrapper } from './static-function-wrapper';
+import { EslintService } from './services/eslint';
 
 const utilsServiceInstance = new UtilsService(staticFunctionWrapper);
 const npmServiceInstance = new NpmService(utilsServiceInstance);
 const modelServiceInstance = new ModelService(utilsServiceInstance);
 const serviceServiceInstance = new ServiceService(utilsServiceInstance);
+
+const eslintServiceInstance = new EslintService(npmServiceInstance, utilsServiceInstance);
 
 const typeScriptServiceInstance = new TypeScriptService(npmServiceInstance, utilsServiceInstance);
 
@@ -24,13 +27,10 @@ const jestServiceInstance = new JestService(
   typeScriptServiceInstance,
   utilsServiceInstance
 );
-const prettierServiceInstance = new PrettierService(
-  npmServiceInstance,
-  typeScriptServiceInstance,
-  utilsServiceInstance
-);
+const prettierServiceInstance = new PrettierService(npmServiceInstance, utilsServiceInstance);
 
 const app = new App(
+  eslintServiceInstance,
   jestServiceInstance,
   modelServiceInstance,
   npmServiceInstance,

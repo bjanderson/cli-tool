@@ -7,9 +7,11 @@ import {
   TypeScriptService,
   UtilsService,
 } from './services';
+import { EslintService } from './services/eslint';
 
 export class App {
   constructor(
+    private eslintService: EslintService,
     private jestService: JestService,
     private modelService: ModelService,
     private npmService: NpmService,
@@ -58,11 +60,14 @@ export class App {
   runInit(args: string[]): void {
     const subCommand = args.shift();
     switch (subCommand) {
+      case 'eslint':
+        this.eslintService.init(args);
+        break;
       case 'jest':
         this.jestService.init(args);
         break;
       case 'prettier':
-        this.prettierService.init(args);
+        this.prettierService.init(/* args */);
         break;
       case 'npm':
         this.npmService.init(args);
@@ -111,13 +116,17 @@ Example:
 
 init \tInitialize things in your project
 
-  npm \t\tInitialize npm
-
-  typescript \tInitialize typescript and tslint
+  eslint \t\tInitialize eslint
+    -j, --vanillajs \t\t\t Initialize eslint for a vanilla JavaScript project instead of TypeScript
+    -n, --nodejs \t\t\t Initialize eslint for a nodejs project instead of the browser
 
   jest \t\tInitialize jest for unit testing
 
+  npm \t\tInitialize npm
+
   prettier \tInitialize prettier for code formatting
+
+  typescript \tInitialize typescript and tslint
 
 Example:
 

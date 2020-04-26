@@ -91,7 +91,7 @@ export class ServiceService {
     const text = `import { ${config.pascal}Service } from './${config.kabob}.service';
 
 let service;
-function init() {
+function init(): void {
   service = new ${config.pascal}Service();
 }
 
@@ -114,7 +114,7 @@ describe('${config.pascal}Service', () => {
     const text = `import { ${config.pascal}Service } from './${config.kabob}.service';
 
 let service: any;
-function init() {
+function init(): void {
   service = new ${config.pascal}Service();
 }
 
