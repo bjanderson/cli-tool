@@ -1,3 +1,4 @@
+import { getObject } from '@bj.anderson/utils';
 import { NpmDependencyType } from '../../enums';
 import { NpmService } from '../npm';
 import { UtilsService } from '../utils';
@@ -17,7 +18,7 @@ export class TypeScriptService {
 
   updatePackageJson(): void {
     const json = this.npmService.getPackageJson();
-    json.scripts = json.scripts || {};
+    json.scripts = getObject(json.scripts);
     json.scripts.build = 'tsc';
     json.scripts.start = 'node dist/index.js';
     // json.scripts.lint = `tslint --project "."`;
