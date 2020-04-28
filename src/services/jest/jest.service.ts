@@ -1,3 +1,4 @@
+import { getObject } from '@bj.anderson/utils';
 import { FileExtension, NpmDependencyType } from '../../enums';
 import { NpmService } from '../npm';
 import { TypeScriptService } from '../typescript';
@@ -26,7 +27,7 @@ export class JestService {
 
   updatePackageJson(): void {
     const json = this.npmService.getPackageJson();
-    json.scripts = json.scripts || {};
+    json.scripts = getObject(json.scripts);
     json.scripts.test = 'jest';
     json.scripts['test:cov'] = 'jest --coverage';
 
@@ -34,7 +35,7 @@ export class JestService {
   }
 
   installPackages(isVanillaJs: boolean): void {
-    let packages = ['jest'];
+    let packages = ['jest', 'jest-cli'];
     if (!isVanillaJs) {
       packages = packages.concat(['ts-jest', '@types/jest']);
     }

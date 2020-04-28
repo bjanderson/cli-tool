@@ -1,3 +1,4 @@
+import { getObject } from '@bj.anderson/utils';
 import { UtilsService } from '../utils';
 import { NpmService } from '../npm';
 import { NpmDependencyType, FileExtension } from '../../enums';
@@ -22,7 +23,7 @@ export class EslintService {
 
   updatePackageJson(): void {
     const json = this.npmService.getPackageJson();
-    json.scripts = json.scripts || {};
+    json.scripts = getObject(json.scripts);
     json.scripts.lint = 'eslint ./src --ext .js,.ts';
     this.npmService.writePackageJson(json);
     this.installPackages();
