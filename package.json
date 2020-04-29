@@ -1,6 +1,6 @@
 {
   "name": "@bj.anderson/cli-tool",
-  "version": "1.0.2",
+  "version": "1.1.1",
   "description": "A command line program for generating JavaScript and TypeScript projects and boilerplate code.",
   "author": "BJ Anderson",
   "license": "MIT",

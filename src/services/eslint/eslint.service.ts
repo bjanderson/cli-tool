@@ -14,26 +14,23 @@ export class EslintService {
     const isNodejs = i > -1;
     const fileExtension = this.utilsService.getFileExtension(args);
     const isVanillaJs = fileExtension === FileExtension.JS;
-    this.updatePackageJson();
+    this.updatePackageJson(isVanillaJs);
     this.createEslintrc(isVanillaJs, isNodejs);
     if (!isVanillaJs) {
       this.createEslintTsconfigJson();
     }
   }
 
-  updatePackageJson(): void {
+  updatePackageJson(isVanillaJs: boolean): void {
     const json = this.npmService.getPackageJson();
     json.scripts = getObject(json.scripts);
     json.scripts.lint = 'eslint ./src --ext .js,.ts';
     this.npmService.writePackageJson(json);
-    this.installPackages();
+    this.installPackages(isVanillaJs);
   }
 
-  installPackages(): void {
-    const packages = [
-      '@typescript-eslint/eslint-plugin',
-      '@typescript-eslint/eslint-plugin-tslint',
-      '@typescript-eslint/parser',
+  installPackages(isVanillaJs: boolean): void {
+    let packages = [
       'eslint',
       'eslint-config-airbnb',
       'eslint-config-prettier',
@@ -43,6 +40,14 @@ export class EslintService {
       'eslint-plugin-json',
       'eslint-plugin-prettier',
     ];
+    if (!isVanillaJs) {
+      packages = packages.concat([
+        '@typescript-eslint/eslint-plugin',
+        '@typescript-eslint/eslint-plugin-tslint',
+        '@typescript-eslint/parser',
+        'tslint',
+      ]);
+    }
     this.npmService.installPackages(packages, NpmDependencyType.DEV_DEPENDENCY);
   }
 

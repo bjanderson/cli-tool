@@ -122,11 +122,29 @@ describe('EslintService', () => {
       expect(typeof service.installPackages).toEqual('function');
     });
 
-    it('calls npmService.installPackages()', () => {
+    it('calls npmService.installPackages() with !isVanillaJs', () => {
       const packages = [
+        'eslint',
+        'eslint-config-airbnb',
+        'eslint-config-prettier',
+        'eslint-import-resolver-typescript',
+        'eslint-plugin-import',
+        'eslint-plugin-jsdoc',
+        'eslint-plugin-json',
+        'eslint-plugin-prettier',
         '@typescript-eslint/eslint-plugin',
         '@typescript-eslint/eslint-plugin-tslint',
         '@typescript-eslint/parser',
+        'tslint',
+      ];
+      const spy = spyOn(service.npmService, 'installPackages').and.callThrough();
+      const isVanillaJs = false;
+      service.installPackages(isVanillaJs);
+      expect(spy).toHaveBeenCalledWith(packages, NpmDependencyType.DEV_DEPENDENCY);
+    });
+
+    it('calls npmService.installPackages() with isVanillaJs', () => {
+      const packages = [
         'eslint',
         'eslint-config-airbnb',
         'eslint-config-prettier',
@@ -137,7 +155,8 @@ describe('EslintService', () => {
         'eslint-plugin-prettier',
       ];
       const spy = spyOn(service.npmService, 'installPackages').and.callThrough();
-      service.installPackages();
+      const isVanillaJs = true;
+      service.installPackages(isVanillaJs);
       expect(spy).toHaveBeenCalledWith(packages, NpmDependencyType.DEV_DEPENDENCY);
     });
   });
