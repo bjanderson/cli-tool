@@ -369,4 +369,29 @@ insert_final_newline = ignore
       );
     });
   });
+
+  describe('createJSConfig()', () => {
+    beforeEach(() => {
+      init();
+    });
+
+    it('is a function', () => {
+      expect(typeof service.createJSConfig).toEqual('function');
+    });
+
+    it('calls utilsService.writeFile()', () => {
+      const expected = `
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6"
+  },
+  "include": ["src/**/*"]
+}
+`;
+      const spy = spyOn(service.utilsService, 'writeFile').and.callThrough();
+      service.createJSConfig();
+      expect(spy).toHaveBeenCalledWith(service.jsconfig, expected);
+    });
+  });
 });

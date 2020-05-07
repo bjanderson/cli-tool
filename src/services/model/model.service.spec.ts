@@ -257,7 +257,7 @@ describe('ModelService()', () => {
 export class TestModel {
   constructor(o) {
     const obj = getObject(o);
-    this.value = getString(obj.value);
+    this.id = getString(obj.id);
   }
 }
 `;
@@ -284,11 +284,11 @@ export class TestModel {
       const expectedText = `import { getObject, getString } from '@bj.anderson/utils';
 
 export class TestModel {
-  value: string;
+  id: string;
 
   constructor(o?: Partial<TestModel>) {
     const obj: Partial<TestModel> = getObject(o);
-    this.value = getString(obj.value);
+    this.id = getString(obj.id);
   }
 }
 `;
@@ -319,7 +319,7 @@ import { TestModel } from './test-model.model';
 describe('TestModel', () => {
   describe('constructor defaults', () => {
     const defaults = {
-      value: DEFAULT_STRING,
+      id: DEFAULT_STRING,
     };
 
     it('should have the expected fields', () => {
@@ -342,7 +342,7 @@ describe('TestModel', () => {
   describe('constructor assignments', () => {
     it('should set all values passed into the constructor', () => {
       const test = {
-        value: 'test value',
+        id: 'test id',
       };
 
       expect(Object.values(test)).toEqual(Object.values(new TestModel(test)));

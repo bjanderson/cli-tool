@@ -141,6 +141,6 @@ insert_final_newline = ignore
   "include": ["src/**/*"]
 }
 `;
-    this.utilsService.writeFile(this.gitignoreFile, text);
+    this.utilsService.writeFile(this.jsconfig, text);
   }
 }
