@@ -72,7 +72,7 @@ export class ModelService {
 export class ${config.pascal} {
   constructor(o) {
     const obj = getObject(o);
-    this.value = getString(obj.value);
+    this.id = getString(obj.id);
   }
 }
 `;
@@ -83,11 +83,11 @@ export class ${config.pascal} {
     const text = `import { getObject, getString } from '@bj.anderson/utils';
 
 export class ${config.pascal} {
-  value: string;
+  id: string;
 
   constructor(o?: Partial<${config.pascal}>) {
     const obj: Partial<${config.pascal}> = getObject(o);
-    this.value = getString(obj.value);
+    this.id = getString(obj.id);
   }
 }
 `;
@@ -101,7 +101,7 @@ import { ${config.pascal} } from './${config.kabob}.model';
 describe('${config.pascal}', () => {
   describe('constructor defaults', () => {
     const defaults = {
-      value: DEFAULT_STRING,
+      id: DEFAULT_STRING,
     };
 
     it('should have the expected fields', () => {
@@ -124,7 +124,7 @@ describe('${config.pascal}', () => {
   describe('constructor assignments', () => {
     it('should set all values passed into the constructor', () => {
       const test = {
-        value: 'test value',
+        id: 'test id',
       };
 
       expect(Object.values(test)).toEqual(Object.values(new ${config.pascal}(test)));

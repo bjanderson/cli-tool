@@ -5,6 +5,7 @@ export class NpmService {
   public packageJsonFile = this.utilsService.resolve(['package.json']);
   public gitignoreFile = this.utilsService.resolve(['.gitignore']);
   public editorconfigFile = this.utilsService.resolve(['.editorconfig']);
+  public jsconfig = this.utilsService.resolve(['jsconfig.json']);
 
   constructor(private utilsService: UtilsService) {}
 
@@ -16,6 +17,10 @@ export class NpmService {
       this.cleanPackageJson();
       const fileExtension = this.utilsService.getFileExtension(args);
       this.createIndexJs(fileExtension);
+      const isVanillaJs = fileExtension === FileExtension.JS;
+      if (isVanillaJs) {
+        this.createJSConfig();
+      }
     }
   }
 
@@ -124,5 +129,18 @@ insert_final_newline = ignore
     this.utilsService.createDirectoryIfNotExists(src);
     const indexJs = this.utilsService.resolve(['src', `index.${fileExtension}`]);
     this.utilsService.writeFile(indexJs, `console.log('new npm project')`);
+  }
+
+  createJSConfig(): void {
+    const text = `
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6"
+  },
+  "include": ["src/**/*"]
+}
+`;
+    this.utilsService.writeFile(this.gitignoreFile, text);
   }
 }
