@@ -252,7 +252,7 @@ describe('ModelService()', () => {
         file: 'models/test-model/test-model.model.ts',
         pascal: 'TestModel',
       };
-      const expectedText = `import { getObject, getString } from '@bj.anderson/utils';
+      const expectedText = `import { getObject, getString } from '@bjanderson/utils';
 
 export class TestModel {
   constructor(o) {
@@ -281,7 +281,7 @@ export class TestModel {
         file: 'models/test-model/test-model.model.ts',
         pascal: 'TestModel',
       };
-      const expectedText = `import { getObject, getString } from '@bj.anderson/utils';
+      const expectedText = `import { getObject, getString } from '@bjanderson/utils';
 
 export class TestModel {
   id: string;
@@ -313,7 +313,7 @@ export class TestModel {
         pascal: 'TestModel',
         spec: 'models/test-model/test-model.model.spec.ts',
       };
-      const expectedText = `import { DEFAULT_STRING } from '@bj.anderson/utils';
+      const expectedText = `import { DEFAULT_STRING } from '@bjanderson/utils';
 import { TestModel } from './test-model.model';
 
 describe('TestModel', () => {

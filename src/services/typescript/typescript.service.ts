@@ -1,4 +1,4 @@
-import { getObject } from '@bj.anderson/utils';
+import { getObject } from '@bjanderson/utils';
 import { NpmDependencyType } from '../../enums';
 import { NpmService } from '../npm';
 import { UtilsService } from '../utils';

@@ -1,4 +1,4 @@
-import { getObject, getString, getValueOrDefault } from '@bj.anderson/utils';
+import { getObject, getString, getValueOrDefault } from '@bjanderson/utils';
 import { FileExtension } from '../../enums';
 
 export class ModelConfig {
