@@ -85,7 +85,8 @@ describe('TypeScriptService()', () => {
       const json = {
         scripts: {
           build: 'tsc',
-          start: 'node dist/index.js',
+          start: 'ts-node src/index.ts',
+          'start:build': 'node build/index.js',
           watch: 'npm-watch',
         },
         watch: {
@@ -120,7 +121,7 @@ describe('TypeScriptService()', () => {
       const spy = spyOn(service.npmService, 'installPackages').and.callThrough();
       service.installPackages();
       expect(spy).toHaveBeenCalledWith(
-        ['typescript', '@types/node', 'npm-watch'],
+        ['typescript', '@types/node', 'npm-watch', 'ts-node'],
         NpmDependencyType.DEV_DEPENDENCY
       );
     });

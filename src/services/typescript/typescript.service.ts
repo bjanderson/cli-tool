@@ -20,7 +20,8 @@ export class TypeScriptService {
     const json = this.npmService.getPackageJson();
     json.scripts = getObject(json.scripts);
     json.scripts.build = 'tsc';
-    json.scripts.start = 'node dist/index.js';
+    json.scripts.start = 'ts-node src/index.ts';
+    json.scripts['start:build'] = 'node build/index.js';
     // json.scripts.lint = `tslint --project "."`;
     json.scripts.watch = 'npm-watch';
     json.watch = {
@@ -38,6 +39,7 @@ export class TypeScriptService {
       'typescript',
       '@types/node',
       'npm-watch',
+      'ts-node'
       // 'ts-lint@5.20.1',
       // 'tslint-config-airbnb'
     ];
