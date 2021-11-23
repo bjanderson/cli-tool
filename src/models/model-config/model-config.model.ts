@@ -2,7 +2,7 @@ import { getObject, getString, getValueOrDefault } from '@bjanderson/utils';
 import { FileExtension } from '../../enums';
 
 export class ModelConfig {
-  static readonly defaultModelsFolder = 'src/models';
+  static readonly defaultModelsFolder = 'src/app/models';
 
   camel: string;
   file: string;

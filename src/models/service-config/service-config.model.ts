@@ -2,7 +2,7 @@ import { getObject, getString, getValueOrDefault } from '@bjanderson/utils';
 import { FileExtension } from '../../enums';
 
 export class ServiceConfig {
-  static readonly defaultServicesFolder = 'src/services';
+  static readonly defaultServicesFolder = 'src/app/services';
 
   camel: string;
   file: string;

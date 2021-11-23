@@ -15,11 +15,9 @@ export class UtilsService {
   }
 
   createDirectoryIfNotExists(path: string): void {
-    if (this.pathExists(path)) {
-      console.error(`${path} already exists. Please enter a different name.`);
-      this.exit(1);
+    if (!this.pathExists(path)) {
+      this.createDirectory(path);
     }
-    this.createDirectory(path);
   }
 
   exit(code: number): void {
