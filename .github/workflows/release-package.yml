@@ -1,6 +1,8 @@
 name: cli-tool-release
 
-on: [push]
+on:
+  release:
+    types: [created]
 
 jobs:
   build:
